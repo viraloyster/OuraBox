@@ -47,7 +47,7 @@ Legend: **Decided** means agreed; **Proposed** means recommended but still to be
 
 ## The logo
 
-A box with one corner open and a dot already outside: "Out of the Box" said literally, the idea that got out of the box. A white, rounded stroke on a soft-cornered square, in water color (`#3f7d8a`); inside the app only the stroke is drawn, in the sky's accent color. It was chosen because it's direct and recognizable even at 16 px. The original is in [`app/src-tauri/icons/source/logo.svg`](../app/src-tauri/icons/source/logo.svg); it's exported to a 1024 px PNG and the app icons come from that with `npx tauri icon`.
+A box with one corner open and a dot already outside: "Out of the Box" said literally, the idea that got out of the box. A white, rounded stroke on a soft-cornered square, in navy blue (`#17305a`), like a clear sky just after dusk or the deep Pacific; inside the app only the stroke is drawn, in the sky's accent color. It was chosen because it's direct and recognizable even at 16 px. The original is in [`app/src-tauri/icons/source/logo.svg`](../app/src-tauri/icons/source/logo.svg); it's exported to a 1024 px PNG and the app icons come from that with `npx tauri icon`.
 
 ## The skies
 
