@@ -1,11 +1,14 @@
-# Publishes a version: pushing a tag like v0.1.0 builds the Windows
-# installer, checks it, and creates the release with its notes
-# (the version's section in CHANGELOG.md, then .github/release-notes.md).
+# Publishes a version: pushing a tag like v0.1.0, or "Run workflow"
+# in the Actions tab (which tags the app's current version), builds
+# the Windows installer, checks it, and creates the release with its
+# notes (the version's section in CHANGELOG.md, then
+# .github/release-notes.md).
 name: Release
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 # Creating the release needs write access; nothing else does.
 permissions:
@@ -26,8 +29,8 @@ jobs:
       # installer with the wrong number inside it.
       - name: Tag matches the app's version
         run: |
-          version="${GITHUB_REF_NAME#v}"
           app=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          if [ "$GITHUB_REF_TYPE" = tag ]; then version="${GITHUB_REF_NAME#v}"; else version="$app"; fi
           if [ "$version" != "$app" ]; then
             echo "::error::Tag $GITHUB_REF_NAME, but the app is $app"
             exit 1
@@ -77,6 +80,8 @@ jobs:
 
       - uses: softprops/action-gh-release@v2.2.2
         with:
+          tag_name: v${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
           name: OuraBox ${{ env.VERSION }}
           body_path: notes.md
           files: |
