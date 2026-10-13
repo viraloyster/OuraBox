@@ -1,0 +1,19 @@
+name: An idea for OuraBox
+description: Something that would make OuraBox better for working on ideas.
+labels: [idea]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before writing, it helps to read the [Vision](https://github.com/viraloyster/OuraBox/blob/main/docs/01-vision.md) and the [Philosophy](https://github.com/viraloyster/OuraBox/blob/main/docs/02-philosophy.md): OuraBox is calm on purpose and doesn't try to keep people inside.
+  - type: textarea
+    id: need
+    attributes:
+      label: What you were trying to do
+      description: The situation, not the solution yet.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help

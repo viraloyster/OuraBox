@@ -1,0 +1,29 @@
+# Keeps the dependencies up to date, once a week. A new version waits two
+# weeks before it is proposed: time for problems in it to come to light.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /app
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 14
+    groups:
+      interface:
+        patterns: ["*"]
+  - package-ecosystem: cargo
+    directory: /app/src-tauri
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 14
+    groups:
+      core:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

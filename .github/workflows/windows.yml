@@ -9,6 +9,10 @@ on:
     paths: ["app/**", ".github/workflows/windows.yml"]
   workflow_dispatch:
 
+# Reading the code is all these jobs need.
+permissions:
+  contents: read
+
 jobs:
   windows:
     runs-on: windows-latest

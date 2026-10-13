@@ -1,0 +1,36 @@
+name: Something doesn't work
+description: A bug, a crash, or something that behaves differently than it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time. **If it could expose someone's ideas (the encryption, passwords, backups), don't write it here:** report it privately, see SECURITY.md.
+        Please don't paste the content of your documents: describe them instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: And what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to make it happen again
+      placeholder: |
+        1. Open a file
+        2. Switch to drawing
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The version or the commit, if you know it.
+  - type: input
+    id: system
+    attributes:
+      label: System
+      placeholder: Windows 11, a 2018 laptop with 8 GB

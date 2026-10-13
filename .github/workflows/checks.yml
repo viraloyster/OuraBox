@@ -17,6 +17,10 @@ concurrency:
   group: checks-${{ github.ref }}
   cancel-in-progress: true
 
+# Reading the code is all these jobs need.
+permissions:
+  contents: read
+
 jobs:
   interface:
     name: Interface

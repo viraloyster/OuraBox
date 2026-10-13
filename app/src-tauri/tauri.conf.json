@@ -33,6 +33,11 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "publisher": "viraloyster",
+    "copyright": "Copyright (C) 2025-2026 viraloyster",
+    "license": "AGPL-3.0-only",
+    "homepage": "https://github.com/viraloyster/OuraBox",
+    "shortDescription": "A safe space to develop genuine ideas"
   }
 }

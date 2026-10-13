@@ -25,6 +25,13 @@ OuraBox is under construction. The desktop app, in [`app/`](app/), is in **beta*
 
 **[Read the documentation](docs/README.md)**
 
+## Taking part
+
+- **Trying it and saying what got in the way** is the most useful help right now: open an [issue](https://github.com/viraloyster/OuraBox/issues).
+- **Code, texts or translations:** read [Contributing](CONTRIBUTING.md) first.
+- **A security problem:** never in public; see [Security](SECURITY.md).
+- Everyone in the project's spaces follows the [Code of conduct](CODE_OF_CONDUCT.md).
+
 ## License
 
 Copyright (C) 2025-2026 viraloyster.
@@ -32,3 +39,5 @@ Copyright (C) 2025-2026 viraloyster.
 OuraBox's code is free under the [GNU AGPL, version 3](LICENSE) (`AGPL-3.0-only`): anyone can use it, study it, modify it and share it, as long as what they distribute, or what they offer to others over the internet, stays open under the same license. That way anyone can check that their ideas are safe, and nobody can take OuraBox and close it.
 
 The license covers the code, not the OuraBox name or logo: a modified version has to carry a different name.
+
+OuraBox builds on the work of others (typefaces, libraries): see [Third-party notices](THIRD_PARTY_NOTICES.md).

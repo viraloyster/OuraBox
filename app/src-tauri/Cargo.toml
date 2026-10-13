@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "A safe space to develop genuine ideas"
 edition = "2021"
 license = "AGPL-3.0-only"
+repository = "https://github.com/viraloyster/OuraBox"
 
 [lib]
 name = "ourabox_lib"
