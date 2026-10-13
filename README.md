@@ -13,6 +13,17 @@ It's for people with ideas and callings outside their official lane: the lawyer 
 
 OuraBox doesn't inflate egos or put anyone in the box. It is cold but warm: it helps you see the assumptions that limit each idea and hands the question back to the person who thinks differently. It is minimalist and calm, and it doesn't charge its users.
 
+![OuraBox: a page titled "A garden on the school roof" with two paragraphs, a task list and a hand-drawn sketch of garden beds, a rain tank and a sun, next to a sidebar with the project "Community garden".](docs/images/write-and-draw.webp)
+
+| | |
+|---|---|
+| ![The "About this idea" panel next to the page: what I want to achieve, one next step, and three assumptions marked "I accept it", "I want to break it" or "I don't know".](docs/images/idea-panel.webp) | ![The roots map of the project "Community garden": its documents and the deeper ideas grown from phrases in them, with assumptions as colored chips.](docs/images/roots-map.webp) |
+| **About this idea:** one next step, and the assumptions you take for granted. | **Roots:** go deeper from any sentence, and see how an idea grew. |
+| ![Draw mode with the color panel open: basic colors, favorites and a color mixer, over a hand-drawn sketch.](docs/images/draw-tools.webp) | ![Two documents side by side under the dark "Starry night" sky: a cost table with a calculated total, and the garden page.](docs/images/split-view.webp) |
+| **Drawing:** pen, blends, eraser, shapes and your own colors. | **Side by side,** here under the night sky. |
+
+*Screenshots of the app as it is today (beta), with example content.*
+
 ## What exists today
 
 - **A desktop app in beta**, in [`app/`](app/) (version 0.1.0): projects, files and quick notes; writing, drawing and images on the same page; a place in each idea to write down its assumptions. [What it does](app/README.md#what-it-does-today).

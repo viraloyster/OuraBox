@@ -126,7 +126,12 @@
   }
 }
 
-/* The roots map. */
+/* The roots map. Solid, like the settings: with no blur behind it, the
+   page under the map would show through its cards. */
+.panel.roots-panel.glass {
+  background: var(--page);
+}
+
 .roots-panel {
   width: min(1200px, 100%);
   height: min(820px, 100%);
