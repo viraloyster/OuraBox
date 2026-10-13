@@ -17,12 +17,16 @@ import { currentLocale, t as tr, type Locale } from "./i18n";
 export type CellValue = number | string;
 
 /** Reads a cell: the number it holds, or its text. Accepts "3,5", "1.234,5"
- *  and "1,234.5". */
-export function cellNumber(text: string): number | null {
+ *  and "1,234.5". A number with only one kind of mark, like "40,046" or
+ *  "1.250", is read as the language writes it: in English the comma groups
+ *  thousands, in Spanish and Portuguese the point does. */
+export function cellNumber(text: string, decimal: "." | "," = localeDecimal()): number | null {
   let t = text.trim().replace(/\s/g, "").replace(/[$€£%]$/, "").replace(/^[$€£]/, "");
   if (!t) return null;
-  if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(t)) t = t.replace(/\./g, "").replace(",", ".");
+  if (/^-?\d{1,3}(\.\d{3})+,\d+$/.test(t)) t = t.replace(/\./g, "").replace(",", ".");
   else if (/^-?\d{1,3}(,\d{3})+\.\d+$/.test(t)) t = t.replace(/,/g, "");
+  else if (decimal === "." && /^-?\d{1,3}(,\d{3})+$/.test(t)) t = t.replace(/,/g, "");
+  else if (decimal === "," && /^-?\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
   else if (/^-?\d+,\d+$/.test(t)) t = t.replace(",", ".");
   if (!/^-?(\d+\.?\d*|\.\d+)(e-?\d+)?$/i.test(t)) return null;
   const n = Number(t);
@@ -392,7 +396,7 @@ export function continueSeries(values: string[], count: number): string[] | null
   const last = seed[seed.length - 1];
 
   // Numbers: the step is the difference between the last two (or 1 if there is only one).
-  const numbers = seed.map(cellNumber);
+  const numbers = seed.map((v) => cellNumber(v));
   if (numbers.every((n) => n !== null)) {
     const ns = numbers;
     const step = ns.length > 1 ? ns[ns.length - 1] - ns[ns.length - 2] : 1;

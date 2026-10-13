@@ -24,6 +24,11 @@ describe("table formulas", () => {
 
   it("also reads numbers written the English way when both marks are there", () => {
     expect(cellNumber("1,250.5")).toBe(1250.5);
+    // One kind of mark: read as the language writes numbers.
+    expect(cellNumber("40,046", ".")).toBe(40046);
+    expect(cellNumber("1.250", ".")).toBe(1.25);
+    expect(cellNumber("1.250", ",")).toBe(1250);
+    expect(cellNumber("40,046", ",")).toBe(40.046);
     expect(cellNumber("3.5")).toBe(3.5);
   });
 

@@ -13,16 +13,33 @@ It's for people with ideas and callings outside their official lane: the lawyer 
 
 OuraBox doesn't inflate egos or put anyone in the box. It is cold but warm: it helps you see the assumptions that limit each idea and hands the question back to the person who thinks differently. It is minimalist and calm, and it doesn't charge its users.
 
+## From a simple idea to deep research
+
+**A simple idea:** a garden on the school roof. A few lines, a task list, a sketch, and the assumptions you take for granted.
+
 ![OuraBox: a page titled "A garden on the school roof" with two paragraphs, a task list and a hand-drawn sketch of garden beds, a rain tank and a sun, next to a sidebar with the project "Community garden".](docs/images/write-and-draw.webp)
 
 | | |
 |---|---|
-| ![The "About this idea" panel next to the page: what I want to achieve, one next step, and three assumptions marked "I accept it", "I want to break it" or "I don't know".](docs/images/idea-panel.webp) | ![The roots map of the project "Community garden": its documents and the deeper ideas grown from phrases in them, with assumptions as colored chips.](docs/images/roots-map.webp) |
-| **About this idea:** one next step, and the assumptions you take for granted. | **Roots:** go deeper from any sentence, and see how an idea grew. |
-| ![Draw mode with the color panel open: basic colors, favorites and a color mixer, over a hand-drawn sketch.](docs/images/draw-tools.webp) | ![Two documents side by side under the dark "Starry night" sky: a cost table with a calculated total, and the garden page.](docs/images/split-view.webp) |
-| **Drawing:** pen, blends, eraser, shapes and your own colors. | **Side by side,** here under the night sky. |
+| ![The "About this idea" panel next to the page: what I want to achieve, one next step, and three assumptions marked "I accept it", "I want to break it" or "I don't know".](docs/images/idea-panel.webp) | ![Two documents side by side under the dark "Starry night" sky: a cost table with a calculated total, and the garden page.](docs/images/split-view.webp) |
+| **About this idea:** one next step, and what you take for granted. | **Side by side:** the costs next to the plan. |
 
-*Screenshots of the app as it is today (beta), with example content.*
+**Deep research:** how cholera spread in Soho in 1854, when John Snow traced it to a water pump. Underline, highlight and annotate by hand; sketch the evidence; go deeper from any phrase; keep the data in a table.
+
+![A research page, "How cholera spread in Soho, 1854": phrases underlined in teal, a sentence highlighted in amber, a red hand-drawn circle around "brewery" and a squiggle under "suspected the water", and the top of a hand-drawn map.](docs/images/research-page.webp)
+
+| | |
+|---|---|
+| ![The list of exceptions with a highlighted sentence, above a hand-drawn sketch of Snow's map: streets, the pump, dots for deaths, the empty brewery and the workhouse, with a note saying it is not to scale.](docs/images/research-map.webp) | ![The "About this idea" panel next to the research page under a sunset sky: the goal, one next step, and three assumptions marked "I want to break it", "I don't know" and "I accept it".](docs/images/research-idea.webp) |
+| **Sketch the evidence** right under your notes. | **Name what you take for granted,** and choose which one to push against. |
+| ![The roots map of "Cholera in Soho, 1854": the research page with its assumptions, and three roots below it: "had its own well", "drank beer" and "bad air".](docs/images/research-roots.webp) | ![Two documents side by side on a deep blue sky: "The grand experiment", with houses and deaths per water company, and the annotated research page.](docs/images/research-table.webp) |
+| **Roots:** go deeper from any phrase, and keep the whole inquiry in view. | **The data next to the argument:** Snow's comparison of two water companies. |
+
+**Every palette is a sky.** The same page under four of them:
+
+![The same research page under four skies: Clear, Pink afternoon, Deep sunset and Starry night.](docs/images/skies.webp)
+
+*Screenshots of the app as it is today (beta), with example content. The research example follows John Snow's published work; the map is a sketch, not his data.*
 
 ## What exists today
 
