@@ -1,0 +1,350 @@
+/* Roots: going deeper, root marks, the roots map and assumptions. */
+
+/* ---------- Roots ---------- */
+
+/* A veil that darkens softly with each depth level, like going under water. */
+.depth-veil {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 0%, transparent 30%, rgba(4, 28, 44, 0.55) 100%),
+    linear-gradient(180deg, rgba(10, 48, 70, 0.18), rgba(4, 22, 36, 0.62));
+  opacity: calc(var(--depth, 0) * 0.13);
+  transition: opacity 1.4s var(--ease-out);
+}
+
+/* When going deeper, the current page drifts upward and the root rises from below. */
+.page.leave-down {
+  animation: leave-down 0.32s var(--ease) forwards;
+}
+
+.page.leave-up {
+  animation: leave-up 0.32s var(--ease) forwards;
+}
+
+.page.descend {
+  animation: descend 0.75s var(--ease-out);
+}
+
+.page.ascend {
+  animation: ascend 0.75s var(--ease-out);
+}
+
+@keyframes leave-down {
+  to {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.97);
+  }
+}
+
+@keyframes leave-up {
+  to {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+}
+
+@keyframes descend {
+  from {
+    opacity: 0;
+    transform: translateY(70px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ascend {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A phrase marked as a root: it stands out without shouting. */
+.editor .root-link {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  background: color-mix(in srgb, var(--accent-soft) 45%, transparent);
+  border-radius: 4px;
+  transition: background 0.25s var(--ease);
+}
+
+.editor .root-link:hover {
+  background: var(--accent-soft);
+}
+
+/* The button that appears over a selected phrase: "Go deeper" or "Go to this root". */
+.root-pill {
+  position: absolute;
+  z-index: 4;
+  transform: translateX(-50%);
+  animation: pill-in 0.25s var(--ease-out);
+}
+
+.root-pill[hidden] {
+  display: none;
+}
+
+.root-pill-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px 0 11px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--page);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+}
+
+.root-pill-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.root-pill-button:hover {
+  filter: brightness(1.08);
+}
+
+@keyframes pill-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+}
+
+/* The roots map. */
+.roots-panel {
+  width: min(1200px, 100%);
+  height: min(820px, 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.roots-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+
+.roots-map {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 4px 24px;
+  border-radius: 18px;
+  scrollbar-width: thin;
+}
+
+.roots-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+.roots-lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.roots-lines path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: calc(0.7 - var(--level, 1) * 0.08);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: grow-root 0.9s var(--ease-out) forwards;
+  animation-delay: calc(var(--level, 1) * 0.12s);
+}
+
+@keyframes grow-root {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.root-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  text-align: left;
+  border-radius: 16px;
+  background: var(--page);
+  border: 1px solid color-mix(in srgb, var(--faint) 80%, transparent);
+  box-shadow: var(--shadow-soft);
+  animation: appear 0.5s var(--ease-out) both;
+  animation-delay: calc(var(--level, 0) * 0.12s);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+button.root-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.root-card strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.root-card.project {
+  align-items: center;
+  text-align: center;
+  background: var(--accent);
+  color: var(--page);
+  border: 0;
+}
+
+.root-card.current {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent), var(--shadow-soft);
+}
+
+.root-card.note {
+  border-style: dashed;
+}
+
+.root-assumptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.root-none {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.roots-empty {
+  margin: 32px auto 0;
+  max-width: 360px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* An assumption by its state: an accepted wall, something to break or something to find out. */
+.assumption-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  overflow-wrap: anywhere;
+  background: color-mix(in srgb, var(--faint) 55%, transparent);
+  color: var(--text);
+}
+
+.assumption-chip::before {
+  flex: none;
+  align-self: flex-start;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.assumption-chip.accept::before {
+  content: "■";
+  color: var(--muted);
+}
+
+.assumption-chip.break {
+  background: color-mix(in srgb, var(--ink-coral, #d9785f) 16%, transparent);
+}
+
+.assumption-chip.break::before {
+  content: "◇";
+  color: var(--ink-coral, #d9785f);
+}
+
+.assumption-chip.unknown {
+  background: color-mix(in srgb, var(--ink-sol, #c9962d) 16%, transparent);
+}
+
+.assumption-chip.unknown::before {
+  content: "?";
+  font-weight: 700;
+  color: var(--ink-sol, #c9962d);
+}
+
+/* In the list, a document with roots unfolds like a folder. */
+.branch-toggle {
+  position: absolute;
+  left: calc(var(--indent, 0px) + 4px);
+  top: 3px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--muted);
+  z-index: 1;
+}
+
+.branch-toggle:hover {
+  color: var(--text);
+}
+
+.branch-toggle .chevron {
+  width: 13px;
+  height: 13px;
+  transition: transform 0.3s var(--ease);
+}
+
+.branch-toggle[aria-expanded="true"] .chevron {
+  transform: rotate(90deg);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}

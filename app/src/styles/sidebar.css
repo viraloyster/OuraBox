@@ -1,0 +1,132 @@
+/* The sidebar: activity strip, explorer header and list actions. */
+
+/* ---------- The sidebar, like in a code editor ----------
+   A strip of icons that is always there (views below and above) and, next to
+   it, the chosen view: the tree explorer or search. While writing, only the
+   view hides; the strip stays at hand. */
+
+.sidebar {
+  display: flex;
+  min-width: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.activity-bar {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: var(--activity);
+  padding: 14px 0 10px;
+  border-right: 1px solid color-mix(in srgb, var(--faint) 50%, transparent);
+}
+
+.activity-bar > .brand-mark {
+  margin: 2px 0 12px;
+}
+
+.activity-spacer {
+  flex: 1;
+}
+
+.activity {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  color: var(--muted);
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.activity:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
+}
+
+.activity svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* The open view: the icon lights up and a mark goes with it on the left. */
+.activity[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.app:not(.sidebar-hidden) .activity[aria-pressed="true"]::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.side-panel {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  width: calc(var(--sidebar) - var(--activity));
+  min-height: 0;
+  transition: opacity 0.3s var(--ease);
+}
+
+.sidebar-hidden .side-panel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 46px;
+  padding: 8px 8px 4px 16px;
+}
+
+.side-title {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* The header actions appear when hovering over the list, like in an editor. */
+.side-head .sidebar-actions {
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+
+.side-panel:hover .sidebar-actions,
+.sidebar-actions:focus-within {
+  opacity: 1;
+}
+
+.sidebar-actions .icon-button {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 5px;
+  border-radius: 8px;
+}
+
+.sidebar-actions svg {
+  width: 16px;
+  height: 16px;
+}
+
+.brand-mark {
+  /* The logo: a box with its corner open and the idea outside
+     (src-tauri/icons/source/logo.svg). It takes the sky's accent color. */
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='14 14 72 72'%3E%3Cpath d='M76 50V68Q76 76 68 76H32Q24 76 24 68V32Q24 24 32 24H50' fill='none' stroke='%23000' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='74' cy='26' r='9' fill='%23000'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='14 14 72 72'%3E%3Cpath d='M76 50V68Q76 76 68 76H32Q24 76 24 68V32Q24 24 32 24H50' fill='none' stroke='%23000' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='74' cy='26' r='9' fill='%23000'/%3E%3C/svg%3E") center / contain no-repeat;
+}

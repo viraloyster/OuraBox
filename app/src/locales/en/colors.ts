@@ -1,0 +1,27 @@
+export default {
+  ink: { ink: "Ink", agua: "Aqua blue", coral: "Coral", sol: "Amber", alga: "Green", crepusculo: "Violet" },
+  basic: {
+    black: "Black",
+    white: "White",
+    gray: "Gray",
+    red: "Red",
+    orange: "Orange",
+    yellow: "Yellow",
+    green: "Green",
+    turquoise: "Turquoise",
+    blue: "Blue",
+    purple: "Purple",
+    pink: "Pink",
+    brown: "Brown",
+  },
+  palettes: {
+    pastel: "Pastel",
+    earth: "Earth",
+    ocean: "Ocean",
+    forest: "Forest",
+    sunset: "Sunset",
+    skin: "Skin",
+    vivid: "Vivid",
+    grays: "Grays",
+  },
+};

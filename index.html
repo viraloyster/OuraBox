@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OuraBox - Out of the Box starts with seeing the box</title>
+    <meta name="description" content="A safe space to develop genuine ideas. A place where ideas, quick or deep, naive or mature, have somewhere to live and grow.">
+    <meta property="og:title" content="OuraBox">
+    <meta property="og:description" content="Out of the Box starts with seeing the box. A safe space to develop genuine ideas, where they have somewhere to live and grow.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='14 14 72 72'><path d='M76 50V68Q76 76 68 76H32Q24 76 24 68V32Q24 24 32 24H50' fill='none' stroke='%23a78bfa' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/><circle cx='74' cy='26' r='9' fill='%23a78bfa'/></svg>">
+    <style>
+        :root {
+            --bg: #15132b;
+            --surface: #1f1c3d;
+            --border: #34306a;
+            --text: #f2f0ff;
+            --muted: #bdb8de;
+            --accent: #a78bfa;
+            --accent-ink: #15132b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--bg);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: radial-gradient(ellipse at top, #2a2259 0%, var(--bg) 60%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 28px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            color: var(--text);
+        }
+
+        section {
+            padding: 72px 0;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 96px 0 72px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: clamp(36px, 7vw, 60px);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 24px;
+        }
+
+        h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: clamp(18px, 2.5vw, 22px);
+            color: var(--muted);
+            max-width: 680px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 999px;
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--accent-ink);
+        }
+
+        .btn-secondary {
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:hover,
+        .btn-secondary:focus-visible {
+            background: var(--surface);
+        }
+
+        h2 {
+            font-size: clamp(30px, 5vw, 42px);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .section-intro {
+            color: var(--muted);
+            font-size: 18px;
+            max-width: 720px;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--muted);
+        }
+
+        .conversation {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 760px;
+        }
+
+        .message {
+            border-radius: 16px;
+            padding: 20px 24px;
+        }
+
+        .message .who {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .message p + p,
+        .message ul + p,
+        .message p + ul {
+            margin-top: 12px;
+        }
+
+        .message ul {
+            padding-left: 22px;
+        }
+
+        .message-person {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            align-self: flex-end;
+        }
+
+        .message-person .who {
+            color: var(--muted);
+        }
+
+        .message-ourabox {
+            background: #241f4d;
+            border-left: 4px solid var(--accent);
+        }
+
+        .message-ourabox .who {
+            color: var(--accent);
+        }
+
+        .box-note {
+            margin-top: 24px;
+            max-width: 760px;
+            color: var(--muted);
+        }
+
+        .box-note strong {
+            color: var(--text);
+        }
+
+        .space-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 2px 12px;
+        }
+
+        .status-active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .now {
+            text-align: center;
+        }
+
+        .now .section-intro {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 0;
+            color: var(--muted);
+            font-size: 15px;
+            text-align: center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .btn {
+                transition: none;
+            }
+
+            .btn:hover,
+            .btn:focus-visible {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="logo">Oura<span>Box</span></a>
+            <nav aria-label="Main">
+                <a href="#philosophy">Philosophy</a>
+                <a href="#example">An example</a>
+                <a href="#spaces">The three spaces</a>
+                <a href="#today">Today</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <span class="eyebrow">Out of the Box</span>
+                <h1>Thinking outside the box<br>starts with <em>seeing it</em>.</h1>
+                <p class="subtitle">A space where ideas, quick or deep, naive or mature, have somewhere to live and grow. Without inflating them, without crushing them.</p>
+                <div class="cta-buttons">
+                    <a href="#philosophy" class="btn btn-primary">Read the philosophy</a>
+                    <a href="https://github.com/viraloyster/OuraBox" class="btn btn-secondary">Follow the project</a>
+                </div>
+            </section>
+
+            <section id="philosophy">
+                <h2>People are born naive. The world is hard.</h2>
+                <p class="section-intro">When a naive idea collides with the real world, the blow usually kills two things: the idea, and the courage of the person who had it to have the next one. OuraBox is the gateway for taking that naivety into the real world without the crash.</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Naivety is raw material</h3>
+                        <p>We are not here to take it away from you. We are here to give it a place to work.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Cold with the idea, warm with the person</h3>
+                        <p>The reality about the idea is not sugarcoated. Respect for the person who had it is not negotiable.</p>
+                    </div>
+                    <div class="card">
+                        <h3>We don't give verdicts: we show the box</h3>
+                        <p>Everything we know rests on assumptions. We make them visible so you can decide which ones to push.</p>
+                    </div>
+                    <div class="card">
+                        <h3>We hand the question back</h3>
+                        <p>Whoever thinks outside the box finds the way out. We keep them company.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Each idea at its own pace</h3>
+                        <p>Sparks are kept without judgment. The challenge comes when you ask for it, not before.</p>
+                    </div>
+                    <div class="card">
+                        <h3>No degrees in the way</h3>
+                        <p>What matters is not who you are or what you studied, but what you bring and what you work on. The field is secondary.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="example">
+                <h2>How OuraBox responds</h2>
+                <p class="section-intro">Neither "What a brilliant idea!" nor "That's impossible."</p>
+                <div class="conversation">
+                    <div class="message message-person">
+                        <span class="who">Person</span>
+                        <p>My idea is to build a water-powered engine.</p>
+                    </div>
+                    <div class="message message-ourabox">
+                        <span class="who">OuraBox</span>
+                        <p>An ambitious project. So far, no one has shown that an engine using water as fuel can work.</p>
+                        <p>The challenge is that water is what is left after burning hydrogen: it is chemical "ash" and has no energy left to release. That's why splitting it again costs more energy than it gives back. So far it has been shown that this is not a lack of technology, but the laws of thermodynamics.</p>
+                        <p>Behind your idea there is an intuition worth keeping: I think you are looking for clean, abundant and cheap energy, and water is everywhere. There are people working on that idea right now:</p>
+                        <ul>
+                            <li>Hydrogen obtained from water with solar or wind power. There, water is where the energy is stored, not its source.</li>
+                            <li>Fuel cells.</li>
+                            <li>Water injection in engines, which really exists, to cool them and improve their performance.</li>
+                        </ul>
+                        <p>Can you think of any way to deal with those challenges?</p>
+                        <p>If you like, we can make a list or break down one of the areas.</p>
+                    </div>
+                </div>
+                <p class="box-note"><strong>The box around this idea:</strong> the "ban" rests on an assumption, that all the energy has to come from the water. Break that assumption and something nature has been doing for millions of years appears: photosynthesis splits water using the sun's energy.</p>
+            </section>
+
+            <section id="spaces">
+                <h2>The three spaces</h2>
+                <p class="section-intro">The first one has to be worth it on its own, even if there is no one else on the platform.</p>
+                <div class="grid">
+                    <div class="card">
+                        <span class="space-number" aria-hidden="true">1</span>
+                        <h3>Safe space</h3>
+                        <p>Your ideas, private by default. Quick sparks, deep ideas with their assumptions in view, and dormant ideas that can rest without counting as abandoned.</p>
+                        <span class="status status-active">In design</span>
+                    </div>
+                    <div class="card">
+                        <span class="space-number" aria-hidden="true">2</span>
+                        <h3>Community</h3>
+                        <p>People working on their ideas, visible to others when they choose to be. Where the work starts to show.</p>
+                        <span class="status">To be defined</span>
+                    </div>
+                    <div class="card">
+                        <span class="space-number" aria-hidden="true">3</span>
+                        <h3>Companies</h3>
+                        <p>Open doors for the talent working on OuraBox. About people and work, never about buying ideas.</p>
+                        <span class="status">To be defined</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="today" class="now">
+                <h2>Today, OuraBox is an idea</h2>
+                <p class="section-intro">There is no product yet. There is a philosophy, and we are building it with that same philosophy: step by step, with the box in view.</p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/viraloyster/OuraBox/tree/main/docs" class="btn btn-secondary">Read the full philosophy</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">OuraBox · Out of the Box</div>
+    </footer>
+</body>
+</html>

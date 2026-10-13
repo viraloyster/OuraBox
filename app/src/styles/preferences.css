@@ -1,0 +1,174 @@
+/* Reduced motion and transparency, reading preferences, and print or save as PDF. */
+
+/* Whoever turns off animations in their system doesn't see them here either. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Whoever asks for less transparency gets solid panels. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--page);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Reading: font size and typeface of the page. */
+.reading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 420px);
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.reading h3 {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.reading > span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.reading .segmented {
+  max-width: 320px;
+}
+
+.reading .segmented.fonts {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.reading .serif-sample {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+}
+
+
+
+
+
+
+
+/* ---------- Print or save as PDF ----------
+   Only the active page, at real size, with paper colors. The drawing comes in
+   as an image that src/export.ts paints right before (the screen canvases
+   only cover what is visible). */
+
+.print-ink {
+  display: none;
+}
+
+@page {
+  size: letter;
+  margin: 0;
+}
+
+@media print {
+  :root {
+    --page: #ffffff !important;
+    --text: #1e3040 !important;
+    --muted: #566b7b !important;
+    --faint: #cfe0ec !important;
+    --accent: #246fa3 !important;
+    --ink-agua: #2b7c8a !important;
+    --ink-coral: #c2553c !important;
+    --ink-sol: #a5761c !important;
+    --ink-alga: #4c7c37 !important;
+    --ink-crepusculo: #7260a6 !important;
+  }
+
+  html,
+  body {
+    height: auto;
+    overflow: visible;
+    background: #fff !important;
+  }
+
+  body.printing > :not(.app),
+  body.printing .sidebar,
+  body.printing .topbar,
+  body.printing .pane:not(.print-target),
+  body.printing .divider-handle,
+  body.printing .pane .ink,
+  body.printing .pane > button,
+  body.printing .pane > .zoom,
+  body.printing .pane > .root-pill,
+  body.printing .idea-panel,
+  body.printing .table-bar,
+  body.printing .note-meta,
+  body.printing .trail,
+  body.printing .box-grip,
+  body.printing .box-resize {
+    display: none !important;
+  }
+
+  body.printing .app,
+  body.printing .workspace,
+  body.printing .panes,
+  body.printing .pane-column,
+  body.printing .print-target,
+  body.printing .print-target .scroller,
+  body.printing .print-target .page-frame {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  body.printing .print-target .page {
+    scale: 1 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    background-image: none !important;
+  }
+
+  .print-ink.behind {
+    z-index: -1;
+  }
+
+  .print-ink.front {
+    z-index: 2;
+  }
+
+  body.printing .print-ink {
+    display: block;
+    position: absolute;
+    left: 0;
+    pointer-events: none;
+  }
+
+  body.printing .editor.empty::before {
+    content: none;
+  }
+
+  body.printing .editor {
+    caret-color: transparent;
+  }
+
+  body.printing .page::before {
+    display: none !important;
+  }
+
+  .editor tr,
+  .editor img {
+    break-inside: avoid;
+  }
+}

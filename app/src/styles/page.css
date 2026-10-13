@@ -1,0 +1,159 @@
+/* An idea that comes back, the page frame and the page itself. */
+
+/* ---------- An idea that comes back ---------- */
+
+.resurface {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 6;
+  width: 330px;
+  padding: 18px 18px 14px;
+  border-radius: 20px;
+  animation: rise 0.8s var(--ease-out);
+}
+
+.resurface p {
+  margin: 0;
+}
+
+.resurface-when {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.resurface-title {
+  margin: 4px 0 2px !important;
+  font-size: 15px;
+  font-weight: 650;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resurface-question {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.resurface-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.resurface-actions button {
+  flex: 1;
+  padding: 7px 6px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.resurface-actions button:first-child {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.resurface-actions button:hover {
+  color: var(--text);
+}
+
+.resurface-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-width: 28px;
+  height: 28px;
+}
+
+.divider-handle {
+  flex: 0 0 14px;
+  position: relative;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.divider-handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 44px;
+  border-radius: 2px;
+  background: var(--glass);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s var(--ease);
+}
+
+.divider-handle:hover::after,
+.divider-handle.dragging::after {
+  opacity: 1;
+}
+
+.scroller {
+  flex: 1;
+  overflow: auto;
+  border-radius: 22px 22px 0 0;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 40%, transparent) transparent;
+}
+
+/* The frame takes the size of the page already scaled by the zoom (see pane.ts). */
+.page-frame {
+  margin: 0 auto;
+  min-height: 100%;
+}
+
+.page {
+  --page-width: 816px;
+  --inv: 1;
+  position: relative;
+  /* Its own layer: what is drawn behind the text stays on the paper. */
+  isolation: isolate;
+  width: 816px;
+  padding: 72px clamp(28px, calc(var(--page-width) * 0.09), 84px) 120px;
+  transform-origin: 0 0;
+  background: var(--page);
+  border-radius: 16px;
+  box-shadow: var(--shadow-page);
+  cursor: text;
+  transition: background 0.9s var(--ease);
+}
+
+/* While zooming, the page is scaled as an image instead of being drawn again
+   at every step; it is drawn sharp a moment after (see pane.ts). */
+.page.zooming {
+  will-change: scale;
+}
+
+/* A file looks like pages: a soft line marks where each one ends
+   (the page height is chosen by the person, see pane.ts). */
+.page.paged {
+  --sheet-height: 1056px;
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(var(--sheet-height) - 1px),
+    color-mix(in srgb, var(--faint) 90%, transparent) calc(var(--sheet-height) - 1px)
+  );
+  background-size: 100% var(--sheet-height);
+  background-repeat: repeat-y;
+}
+
+/* The space left by a page added or duplicated in the middle of the text. */
+.editor .sheet-space {
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Below the last page there is some air, like in a word processor. */
+.page-frame {
+  margin-bottom: 32px;
+}

@@ -1,0 +1,200 @@
+/* Search: the search panel, highlighted matches and result trees. */
+
+/* ---------- Search ---------- */
+
+.search {
+  padding: 0 10px 8px;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 6px 0 11px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--page) 55%, transparent);
+  border: 1px solid transparent;
+  color: var(--muted);
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.search-field:focus-within {
+  background: var(--page);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.search-field svg {
+  width: 16px;
+  height: 16px;
+}
+
+.search-field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: var(--text);
+}
+
+.search-field input::placeholder {
+  color: var(--muted);
+}
+
+.search-clear {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.search-clear[hidden] {
+  display: none;
+}
+
+.search-clear:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.search-clear svg {
+  width: 14px;
+  height: 14px;
+}
+
+.search-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 8px;
+  animation: appear 0.3s var(--ease-out) both;
+}
+
+.search-options[hidden],
+.search-options select[hidden] {
+  display: none;
+}
+
+.search-options select {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--page) 55%, transparent);
+  border: 1px solid transparent;
+  border-radius: 9px;
+  outline: none;
+  cursor: pointer;
+}
+
+.search-options select:hover,
+.search-options select:focus-visible {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* The matches in the open page, highlighted while searching. */
+::highlight(ourabox-find) {
+  background-color: color-mix(in srgb, var(--ink-sol) 35%, transparent);
+}
+
+.result-snippet {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 3px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.result-item mark {
+  color: inherit;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+.result-item .doc-title {
+  white-space: normal;
+}
+
+.search-message {
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* With several files open, each one's name above its results. */
+.search-message.page-group {
+  padding: 10px 14px 4px;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 2px 6px 16px;
+  overflow: hidden auto;
+  flex: 1;
+  font-size: 13.5px;
+}
+
+/* Each tree row: compact, with the highlight spanning edge to edge and a
+   vertical guide for each depth level. */
+.doc-item {
+  --indent: calc(var(--level, 0) * 12px);
+  position: relative;
+  border-radius: 7px;
+  transition: background 0.15s var(--ease);
+}
+
+.doc-item::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 0;
+  bottom: 0;
+  width: var(--indent);
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--muted) 22%, transparent) 0 1px, transparent 1px 12px);
+  pointer-events: none;
+}
+
+.doc-item:hover {
+  background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
+}
+
+.doc-item.active {
+  background: var(--accent-soft);
+}
+
+.doc-item.active .doc-title {
+  color: var(--accent);
+}
+
+.group-item {
+  margin-left: calc(var(--level, 0) * 12px);
+}
+
+.doc-item.dragging {
+  opacity: 0.5;
+}
+
+.sidebar-actions {
+  display: flex;
+  gap: 2px;
+}

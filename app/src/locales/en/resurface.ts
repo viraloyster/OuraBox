@@ -1,0 +1,17 @@
+export default {
+  label: "An idea that comes back",
+  days: { one: "1 day ago", other: "{count} days ago" },
+  weeks: { one: "1 week ago", other: "{count} weeks ago" },
+  months: { one: "1 month ago", other: "{count} months ago" },
+  years: { one: "1 year ago", other: "{count} years ago" },
+  youWrote: "{when} you wrote",
+  untitled: "an untitled idea",
+  question: "Is it still alive?",
+  resume: "Pick it up",
+  resumeHint: "Open it now",
+  rest: "Let it rest",
+  restHint: "It won't come back for a month",
+  release: "Let it go",
+  releaseHint: "It moves to the released ideas: nothing is deleted",
+  close: "Close",
+};

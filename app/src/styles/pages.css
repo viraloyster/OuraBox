@@ -1,0 +1,146 @@
+/* Pages and the drawing layers inside them. */
+
+/* ---------- Pages ---------- */
+
+.sheet-panel {
+  width: 286px;
+  padding: 12px;
+}
+
+.sheet-where {
+  margin: 0 4px 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.sheet-actions {
+  position: static;
+  padding: 0;
+  margin: 0 -4px;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.sheet-actions button.armed {
+  color: var(--ink-coral, #c2553c);
+  white-space: normal;
+  text-align: left;
+}
+
+.sheet-sizes {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+
+.sheet-sizes button {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 8px 2px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sheet-sizes button:hover {
+  background: color-mix(in srgb, var(--faint) 45%, transparent);
+}
+
+.sheet-sizes button[aria-checked="true"] {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.sheet-shape {
+  height: 26px;
+  max-width: 34px;
+  border-radius: 3px;
+  background: var(--page);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--muted) 55%, transparent);
+}
+
+.sheet-turn {
+  margin-top: 8px;
+}
+
+.sheet-custom {
+  display: flex;
+  align-items: end;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.sheet-custom label {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+}
+
+.sheet-custom input {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 1px solid color-mix(in srgb, var(--faint) 90%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--page) 70%, transparent);
+  color: var(--text);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet-custom > span {
+  padding-bottom: 7px;
+}
+
+/* ---------- Drawing layers ---------- */
+
+/* The canvases go inside the page: when scrolling they move with the text.
+   They cover only what is visible (plus a margin) and the rest is clipped. The
+   back layer really sits behind the letters (between the paper and the text):
+   a white outline or a hollow letter looks good over a drawing. */
+.ink-stage {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  border-radius: inherit;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ink {
+  position: absolute;
+  pointer-events: none;
+}
+
+.ink.behind {
+  z-index: -1;
+}
+
+/* What was drawn above the text (each stroke remembers its layer), over the boxes. */
+.ink.front {
+  z-index: 2;
+}
+
+/* The canvas that receives the pen and shows the eraser and guides: on top of everything. */
+.ink.live {
+  z-index: 3;
+}
+
+.ink.live.drawing {
+  pointer-events: auto;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.erasing .ink.live.drawing {
+  cursor: cell;
+}

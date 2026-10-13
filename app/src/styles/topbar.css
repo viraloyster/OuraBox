@@ -1,0 +1,211 @@
+/* The top bar: toolbar layout, buttons, write/draw switch and hover hints. */
+
+/* ---------- Top bar ---------- */
+
+.workspace {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Three columns: the toolbar always stays centered and doesn't move
+   when the save notice appears or disappears. */
+.topbar {
+  position: relative;
+  z-index: 20;
+  display: grid;
+  /* The buttons on the right never end up under the bar: if space runs short,
+     the bar shifts a little to the left instead of covering them. */
+  grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding-bottom: var(--gap);
+}
+
+/* On narrow screens, the bar's buttons move a little closer together. */
+@media (max-width: 1120px) {
+  .toolbar .tool {
+    min-width: 32px;
+    padding: 0 6px;
+  }
+
+  .toolbar .divider {
+    margin: 0 2px;
+  }
+}
+
+
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  border-radius: 17px;
+  min-width: 0;
+}
+
+.topbar-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  animation: appear 0.35s var(--ease-out);
+}
+
+.tools[hidden] {
+  display: none;
+}
+
+/* Good-sized buttons: easy to tap, hard to miss. */
+.icon-button,
+.tool {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 9px;
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.icon-button.round {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: var(--text);
+}
+
+.icon-button:hover,
+.tool:hover {
+  background: color-mix(in srgb, var(--accent-soft) 80%, transparent);
+  color: var(--text);
+}
+
+.tool:active,
+.icon-button:active {
+  transform: scale(0.94);
+}
+
+.tool.active,
+.tool[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* A chosen shape: the button remembers it without taking more space. */
+.tool.on {
+  color: var(--accent);
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 5px;
+  background: color-mix(in srgb, var(--faint) 85%, transparent);
+}
+
+/* Write or draw: two icons with a sliding pill. */
+.mode-switch {
+  position: relative;
+  display: inline-flex;
+  padding: 3px;
+  margin-right: 4px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--faint) 50%, transparent);
+}
+
+.mode-indicator {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 11px;
+  background: var(--page);
+  box-shadow: 0 1px 3px rgba(15, 25, 40, 0.14);
+  transition: transform 0.45s var(--ease-out);
+}
+
+.drawing .mode-indicator {
+  transform: translateX(100%);
+}
+
+.mode {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 34px;
+  border-radius: 11px;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+
+.mode svg {
+  width: 19px;
+  height: 19px;
+}
+
+.mode.active {
+  color: var(--text);
+}
+
+/* A button's name, which appears after leaving the mouse over it for a second. */
+.hint-bubble {
+  position: fixed;
+  z-index: 50;
+  padding: 6px 11px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--text) 92%, transparent);
+  color: var(--page);
+  font-size: 12.5px;
+  font-weight: 550;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-50%);
+  box-shadow: var(--shadow-soft);
+  animation: hint-right 0.22s var(--ease-out);
+}
+
+.hint-bubble.left {
+  animation-name: hint-left;
+}
+
+.hint-bubble.below {
+  transform: translateX(-50%);
+  animation-name: hint-below;
+}
+
+@keyframes hint-right {
+  from {
+    opacity: 0;
+    transform: translate(-6px, -50%) scaleX(0.85);
+  }
+}
+
+@keyframes hint-left {
+  from {
+    opacity: 0;
+    transform: translate(6px, -50%) scaleX(0.85);
+  }
+}
+
+@keyframes hint-below {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -4px);
+  }
+}

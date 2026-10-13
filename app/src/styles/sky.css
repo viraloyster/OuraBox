@@ -1,0 +1,125 @@
+/* The sky background with its air, rain and stars, and the glass panels floating over it. */
+
+/* ---------- The sky ---------- */
+
+.sky-layer {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+}
+
+.sky-layer.visible {
+  opacity: 1;
+}
+
+/* The air: two soft lights and, depending on the sky, drops or stars. Still:
+   moving them forced the background and panels to repaint, and it was barely noticeable. */
+.sky-air {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.air-glow {
+  position: absolute;
+  left: -20vmax;
+  top: -25vmax;
+  width: 80vmax;
+  height: 80vmax;
+  background: radial-gradient(closest-side, var(--air-glow), transparent);
+}
+
+.air-glow.second {
+  left: auto;
+  top: auto;
+  right: -25vmax;
+  bottom: -30vmax;
+  background: radial-gradient(closest-side, var(--air-glow-2), transparent);
+}
+
+.air-drops {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+/* Rain: soft drops, as if seen through glass, in two layers of
+   different sizes to give depth. */
+[data-air="rain"] .air-drops {
+  display: block;
+  top: -300px;
+  background-image:
+    radial-gradient(ellipse 0.9px 11px at 12% 18%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(ellipse 0.9px 9px at 47% 62%, rgba(255, 255, 255, 0.38), transparent),
+    radial-gradient(ellipse 0.9px 12px at 78% 30%, rgba(255, 255, 255, 0.42), transparent),
+    radial-gradient(ellipse 0.9px 8px at 30% 88%, rgba(255, 255, 255, 0.34), transparent),
+    radial-gradient(ellipse 0.9px 10px at 92% 74%, rgba(255, 255, 255, 0.36), transparent);
+  background-size: 260px 300px;
+}
+
+[data-air="rain"] .air-drops.far {
+  top: -240px;
+  opacity: 0.6;
+  background-size: 190px 240px;
+  background-position: 70px 0;
+}
+
+/* Stars: two groups; the second is the same stars flipped,
+   so there are other positions without weighing more. */
+[data-air="stars"] .air-drops {
+  display: block;
+  background: var(--stars);
+}
+
+[data-air="stars"] .air-drops.far {
+  transform: scale(-1, -1);
+}
+
+/* ---------- Glass: panels floating over the sky ----------
+   The glass blur is recalculated every time what is behind it changes,
+   and the sky moves twice per second: with many panels blurring, the
+   screen stuttered at times (measured: half the frames per second and
+   50 ms hitches). That's why only the panels that open for a moment
+   (colors, thickness, menus), which usually sit over the page, blur.
+   The ones that are always there (sidebar, toolbar, buttons, zoom) and
+   the large windows are still glass, just slightly more opaque: behind
+   them is a sky of soft gradients, which looks almost the same blurred. */
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  backdrop-filter: blur(20px) saturate(1.3);
+}
+
+.sidebar.glass,
+.toolbar.glass,
+.icon-button.glass,
+.palette-drawer.glass,
+.panel.glass,
+.lock-card.glass,
+.welcome-card.glass {
+  background: var(--glass-still);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.app {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--sidebar) 1fr;
+  gap: var(--gap);
+  height: 100%;
+  padding: var(--gap);
+  transition: grid-template-columns 0.45s var(--ease-out), gap 0.45s var(--ease-out);
+}
+
+.app.sidebar-hidden {
+  grid-template-columns: var(--activity) 1fr;
+}

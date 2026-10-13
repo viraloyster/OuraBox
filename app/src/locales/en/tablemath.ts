@@ -1,0 +1,15 @@
+export default {
+  error: "#error",
+  cycle: "#cycle",
+  noNumbers: "no numbers",
+  invalidNumber: "invalid number",
+  unknownSign: "unknown sign: {sign}",
+  missing: "missing \"{sign}\"",
+  incompleteRange: "incomplete range",
+  rangeTooBig: "range too big",
+  incomplete: "incomplete formula",
+  unknownFunction: "I don't know {name}",
+  divisionByZero: "division by zero",
+  extraAtEnd: "something extra at the end",
+  invalidResult: "invalid result",
+};

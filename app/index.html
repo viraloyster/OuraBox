@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OuraBox</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <!-- Two sky layers: when the sky changes, one fades over the other. -->
+    <div id="sky-a" class="sky-layer visible" aria-hidden="true"></div>
+    <div id="sky-b" class="sky-layer" aria-hidden="true"></div>
+    <div id="sky-air" class="sky-air" aria-hidden="true"><i class="air-glow"></i><i class="air-glow second"></i><i class="air-drops"></i><i class="air-drops far"></i></div>
+    <!-- The deeper in the roots, the deeper the sky looks. -->
+    <div class="depth-veil" aria-hidden="true"></div>
+
+    <div id="app" class="app">
+      <aside id="sidebar" class="sidebar glass" aria-label="Projects and documents" data-i18n-aria-label="html.sidebar.label">
+        <!-- Like in a code editor: a strip of icons that is always there, and the chosen view beside it. -->
+        <nav class="activity-bar" aria-label="Views" data-i18n-aria-label="html.sidebar.views">
+          <span class="brand-mark" title="OuraBox" aria-hidden="true"></span>
+          <button id="view-files" class="activity" aria-pressed="true" aria-label="Explorer" data-i18n-aria-label="html.sidebar.explorer" data-hint="Explorer" data-i18n-hint="html.sidebar.explorer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4.5 4.5v11a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z" /><path d="M13.5 3.5V8.5h5" /></svg>
+          </button>
+          <button id="view-search" class="activity" aria-pressed="false" aria-label="Search" data-i18n-aria-label="html.sidebar.search" data-hint="Search" data-i18n-hint="html.sidebar.search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4 4" /></svg>
+          </button>
+          <button id="open-roots" class="activity" aria-label="Roots map" data-i18n-aria-label="html.sidebar.rootsMap" data-hint="Roots map" data-i18n-hint="html.sidebar.rootsMap" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.5" r="2" /><path d="M12 6.5v5" /><path d="M12 11.5c-4 0-6 1.5-6 4.5M12 11.5c4 0 6 1.5 6 4.5M12 11.5v4.5" /><circle cx="6" cy="18" r="2" /><circle cx="12" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></svg>
+          </button>
+          <span class="activity-spacer"></span>
+          <button id="view-trash" class="activity" aria-pressed="false" aria-label="Trash" data-i18n-aria-label="html.sidebar.trash" data-hint="Trash" data-i18n-hint="html.sidebar.trash">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h15M9.5 7V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M6.5 7l1 12a1.5 1.5 0 0 0 1.5 1.4h6a1.5 1.5 0 0 0 1.5-1.4l1-12M10 11v6M14 11v6" /></svg>
+          </button>
+          <button id="lock-space" class="activity" aria-label="Lock" data-i18n-aria-label="html.sidebar.lock" data-hint="Lock (Ctrl+L)" data-i18n-hint="html.sidebar.lockHint">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+          </button>
+          <button id="open-settings" class="activity" aria-label="Settings" data-i18n-aria-label="html.sidebar.settings" data-hint="Settings: sky, security, language and users" data-i18n-hint="html.sidebar.settingsHint" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M12 2.8l1.6 2.3 2.7-.7.6 2.7 2.6 1-.9 2.6 1.6 2.3-2.2 1.6.2 2.8-2.8.3-1.1 2.6-2.5-1.2-2.5 1.2-1.1-2.6-2.8-.3.2-2.8-2.2-1.6 1.6-2.3-.9-2.6 2.6-1 .6-2.7 2.7.7z" /></svg>
+          </button>
+        </nav>
+
+        <div class="side-panel">
+          <div class="side-head">
+            <span id="side-title" class="side-title" data-i18n="main.views.files">Explorer</span>
+            <span class="sidebar-actions">
+              <button id="new-doc" class="icon-button" title="New file" data-i18n-title="html.sidebar.newFile" aria-label="New file" data-i18n-aria-label="html.sidebar.newFile">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4.5 4.5v11a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z" /><path d="M12 10.5v6M9 13.5h6" /></svg>
+              </button>
+              <button id="new-project" class="icon-button" title="New project" data-i18n-title="html.sidebar.newProject" aria-label="New project" data-i18n-aria-label="html.sidebar.newProject">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" /><path d="M12 10.5v6M9 13.5h6" /></svg>
+              </button>
+              <button id="collapse-all" class="icon-button" title="Collapse all" data-i18n-title="html.sidebar.collapseAll" aria-label="Collapse all" data-i18n-aria-label="html.sidebar.collapseAll">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M8.5 12h7" /></svg>
+              </button>
+              <button id="pin-sidebar" class="icon-button" title="Pin the list: it won't hide while you write" aria-label="Pin the list" data-i18n-aria-label="html.sidebar.pinList" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 5 3 3v2H7v-2l3-3-1-5z" /><path d="M12 14v6" /></svg>
+              </button>
+            </span>
+          </div>
+          <div class="search" role="search" hidden>
+            <label class="search-field">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4 4" /></svg>
+              <input id="search-input" type="text" placeholder="Search" data-i18n-placeholder="html.sidebar.search" aria-label="Search your ideas" data-i18n-aria-label="html.search.label" autocomplete="off" spellcheck="false" />
+              <button id="search-clear" class="search-clear" type="button" title="Clear the search" data-i18n-title="html.search.clear" aria-label="Clear the search" data-i18n-aria-label="html.search.clear" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" /></svg>
+              </button>
+            </label>
+            <div id="search-options" class="search-options">
+              <select id="search-where" aria-label="Where to search" data-i18n-aria-label="html.search.where"></select>
+              <select id="search-what" aria-label="What to search" data-i18n-aria-label="html.search.what">
+                <option value="all" data-i18n="html.search.all">Name and content</option>
+                <option value="title" data-i18n="html.search.titleOnly">Name only</option>
+              </select>
+            </div>
+          </div>
+          <ul id="doc-list" class="doc-list"></ul>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <span class="topbar-start"></span>
+          <div class="toolbar glass" role="toolbar" aria-label="Tools" data-i18n-aria-label="html.toolbar.label">
+            <div class="mode-switch" role="group" aria-label="Mode" data-i18n-aria-label="html.toolbar.mode">
+              <span class="mode-indicator" aria-hidden="true"></span>
+              <button id="mode-write" class="mode active" aria-pressed="true" aria-label="Write" data-i18n-aria-label="html.toolbar.write" data-hint="Write" data-i18n-hint="html.toolbar.write">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h14M7 15l9.5-9.5a2.1 2.1 0 0 1 3 3L10 18H7v-3z" /></svg>
+              </button>
+              <button id="mode-draw" class="mode" aria-pressed="false" aria-label="Draw" data-i18n-aria-label="html.toolbar.draw" data-hint="Draw" data-i18n-hint="html.toolbar.draw">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 5 2 8-4s5 0 8-3" /><circle cx="19.5" cy="6.5" r="1.5" /></svg>
+              </button>
+            </div>
+
+            <div id="write-tools" class="tools">
+              <div class="popover-anchor">
+                <button id="letter-button" class="tool style-button" aria-label="Bold, italic, underline and outline" data-i18n-aria-label="html.letter.button" data-hint="Bold, italic, underline and outline" data-i18n-hint="html.letter.button" data-expand="letter-panel" data-expand-on="click" aria-expanded="false">
+                  <span class="letter-current" aria-hidden="true">B</span>
+                  <svg class="style-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 10l4 4 4-4" /></svg>
+                </button>
+                <div id="letter-panel" class="popover glass letter-panel" hidden>
+                  <p class="popover-label" data-i18n="html.reading.font">Typeface</p>
+                  <div class="segmented fonts" role="radiogroup" aria-label="Page typeface" data-i18n-aria-label="html.reading.fontLabel">
+                    <button type="button" role="radio" data-reading-font="serif" class="serif-sample" data-i18n="html.reading.serif">Book style</button>
+                    <button type="button" role="radio" data-reading-font="sans" data-i18n="html.reading.sans">Modern</button>
+                  </div>
+                  <p class="popover-label" data-i18n="html.letter.styleLabel">Style</p>
+                  <div class="segmented letter-styles" role="group" aria-label="Letter style" data-i18n-aria-label="html.letter.style">
+                    <button type="button" data-letter="bold" aria-label="Bold" data-i18n-aria-label="html.letter.bold" title="Bold" data-i18n-title="html.letter.bold"><b>B</b></button>
+                    <button type="button" data-letter="italic" aria-label="Italic" data-i18n-aria-label="html.letter.italic" title="Italic" data-i18n-title="html.letter.italic"><i>I</i></button>
+                    <button type="button" data-letter="underline" aria-label="Underline" data-i18n-aria-label="html.letter.underline" title="Underline" data-i18n-title="html.letter.underline"><u>U</u></button>
+                    <button type="button" data-letter="strikeThrough" aria-label="Strikethrough" data-i18n-aria-label="html.letter.strike" title="Strikethrough" data-i18n-title="html.letter.strike"><s>S</s></button>
+                  </div>
+                  <p class="popover-label" data-i18n="html.letter.outline">Letter outline</p>
+                  <div class="segmented outline-widths" role="radiogroup" aria-label="Outline width" data-i18n-aria-label="html.letter.outlineWidth">
+                    <button type="button" role="radio" data-outline="" data-i18n="html.letter.none">None</button>
+                    <button type="button" role="radio" data-outline="fino" data-i18n="html.letter.thin">Thin</button>
+                    <button type="button" role="radio" data-outline="medio" data-i18n="html.letter.medium">Medium</button>
+                    <button type="button" role="radio" data-outline="grueso" data-i18n="html.letter.thick">Thick</button>
+                  </div>
+                  <div class="text-colors outline-colors" role="radiogroup" aria-label="Outline color" data-i18n-aria-label="html.letter.outlineColor">
+                    <button type="button" data-outline-color="texto" class="swatch" title="Like the text" data-i18n-title="html.letter.likeText" aria-label="Outline like the text" data-i18n-aria-label="html.letter.outlineLikeText" style="--swatch: var(--text)"></button>
+                    <button type="button" data-outline-color="fondo" class="swatch" title="Like the page" data-i18n-title="html.letter.likePage" aria-label="Outline like the page" data-i18n-aria-label="html.letter.outlineLikePage" style="--swatch: var(--page)"></button>
+                    <button type="button" data-outline-color="agua" class="swatch" title="Aqua blue" data-i18n-title="html.inks.agua" aria-label="Aqua blue outline" data-i18n-aria-label="html.letter.outlineAgua" style="--swatch: var(--ink-agua)"></button>
+                    <button type="button" data-outline-color="coral" class="swatch" title="Coral" data-i18n-title="html.inks.coral" aria-label="Coral outline" data-i18n-aria-label="html.letter.outlineCoral" style="--swatch: var(--ink-coral)"></button>
+                    <button type="button" data-outline-color="sol" class="swatch" title="Amber" data-i18n-title="html.inks.sol" aria-label="Amber outline" data-i18n-aria-label="html.letter.outlineSol" style="--swatch: var(--ink-sol)"></button>
+                    <button type="button" data-outline-color="alga" class="swatch" title="Green" data-i18n-title="html.inks.alga" aria-label="Green outline" data-i18n-aria-label="html.letter.outlineAlga" style="--swatch: var(--ink-alga)"></button>
+                    <button type="button" data-outline-color="crepusculo" class="swatch" title="Violet" data-i18n-title="html.inks.crepusculo" aria-label="Violet outline" data-i18n-aria-label="html.letter.outlineCrepusculo" style="--swatch: var(--ink-crepusculo)"></button>
+                  </div>
+                  <button type="button" class="text-button hollow-toggle" data-hollow aria-pressed="false" data-i18n="html.letter.hollow">Hollow letters: outline only</button>
+                </div>
+              </div>
+              <div class="popover-anchor font-size">
+                <input id="font-size" class="font-size-input" type="text" inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false" aria-label="Font size, in points" data-i18n-aria-label="html.fontSize.label" data-hint="Font size" data-i18n-hint="html.fontSize.hint" />
+                <button id="font-size-button" class="font-size-caret" type="button" aria-label="Choose a font size" data-i18n-aria-label="html.fontSize.choose" data-expand="font-size-panel" data-expand-on="click" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 10l4 4 4-4" /></svg>
+                </button>
+                <div id="font-size-panel" class="popover glass font-size-panel" hidden><button type="button" data-font-size="8">8</button><button type="button" data-font-size="9">9</button><button type="button" data-font-size="10">10</button><button type="button" data-font-size="11">11</button><button type="button" data-font-size="12">12</button><button type="button" data-font-size="14">14</button><button type="button" data-font-size="16">16</button><button type="button" data-font-size="18">18</button><button type="button" data-font-size="20">20</button><button type="button" data-font-size="24">24</button><button type="button" data-font-size="28">28</button><button type="button" data-font-size="32">32</button><button type="button" data-font-size="36">36</button><button type="button" data-font-size="48">48</button><button type="button" data-font-size="60">60</button><button type="button" data-font-size="72">72</button></div>
+              </div>
+              <span class="divider" aria-hidden="true"></span>
+              <div class="popover-anchor">
+                <button id="style-button" class="tool style-button" aria-label="Paragraph style" data-i18n-aria-label="html.style.label" data-hint="Title, subtitle or text" data-i18n-hint="html.style.hint" data-expand="style-panel" data-expand-on="click" aria-expanded="false">
+                  <span class="style-current">Aa</span>
+                  <svg class="style-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 10l4 4 4-4" /></svg>
+                </button>
+                <div id="style-panel" class="popover glass menu-panel style-panel" hidden>
+                  <button type="button" data-block="h1" role="menuitemradio"><span class="style-sample h1" data-i18n="html.style.title">Title</span></button>
+                  <button type="button" data-block="h2" role="menuitemradio"><span class="style-sample h2" data-i18n="html.style.subtitle">Subtitle</span></button>
+                  <button type="button" data-block="p" role="menuitemradio"><span class="style-sample" data-i18n="html.style.normal">Normal text</span></button>
+                </div>
+              </div>
+              <button class="tool" data-command="insertUnorderedList" aria-label="List" data-i18n-aria-label="html.toolbar.list" data-hint="List" data-i18n-hint="html.toolbar.list">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11" /><circle cx="4.5" cy="6" r="1" /><circle cx="4.5" cy="12" r="1" /><circle cx="4.5" cy="18" r="1" /></svg>
+              </button>
+              <div class="popover-anchor">
+                <button id="format-button" class="tool" aria-label="Format" data-i18n-aria-label="html.format.label" data-hint="Format" data-i18n-hint="html.format.label" data-expand="format-panel" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h10" /></svg>
+                </button>
+                <div id="format-panel" class="popover glass format-panel" hidden>
+                  <p class="popover-label" data-i18n="html.format.align">Align</p>
+                  <div class="segmented" role="radiogroup" aria-label="Align" data-i18n-aria-label="html.format.align">
+                    <button type="button" data-align="left" role="radio" aria-label="Left" data-i18n-aria-label="html.format.left" title="Left" data-i18n-title="html.format.left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h10" /></svg></button>
+                    <button type="button" data-align="center" role="radio" aria-label="Center" data-i18n-aria-label="html.format.center" title="Center" data-i18n-title="html.format.center"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 10h10M4 14h16M7 18h10" /></svg></button>
+                    <button type="button" data-align="right" role="radio" aria-label="Right" data-i18n-aria-label="html.format.right" title="Right" data-i18n-title="html.format.right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M10 10h10M4 14h16M10 18h10" /></svg></button>
+                    <button type="button" data-align="justify" role="radio" aria-label="Justified" data-i18n-aria-label="html.format.justify" title="Justified" data-i18n-title="html.format.justify"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg></button>
+                  </div>
+                  <p class="popover-label" data-i18n="html.format.textColor">Text color</p>
+                  <div class="text-colors">
+                    <button type="button" data-text-color="" class="swatch" title="Normal" data-i18n-title="html.format.normal" aria-label="Normal color" data-i18n-aria-label="html.format.normalColor" style="--swatch: var(--text)"></button>
+                    <button type="button" data-text-color="tenue" class="swatch" title="Muted" data-i18n-title="html.format.muted" aria-label="Muted color" data-i18n-aria-label="html.format.mutedColor" style="--swatch: var(--muted)"></button>
+                    <button type="button" data-text-color="agua" class="swatch" title="Aqua blue" data-i18n-title="html.inks.agua" aria-label="Aqua blue" data-i18n-aria-label="html.inks.agua" style="--swatch: var(--ink-agua)"></button>
+                    <button type="button" data-text-color="coral" class="swatch" title="Coral" data-i18n-title="html.inks.coral" aria-label="Coral" data-i18n-aria-label="html.inks.coral" style="--swatch: var(--ink-coral)"></button>
+                    <button type="button" data-text-color="sol" class="swatch" title="Amber" data-i18n-title="html.inks.sol" aria-label="Amber" data-i18n-aria-label="html.inks.sol" style="--swatch: var(--ink-sol)"></button>
+                    <button type="button" data-text-color="alga" class="swatch" title="Green" data-i18n-title="html.inks.alga" aria-label="Green" data-i18n-aria-label="html.inks.alga" style="--swatch: var(--ink-alga)"></button>
+                    <button type="button" data-text-color="crepusculo" class="swatch" title="Violet" data-i18n-title="html.inks.crepusculo" aria-label="Violet" data-i18n-aria-label="html.inks.crepusculo" style="--swatch: var(--ink-crepusculo)"></button>
+                  </div>
+                  <div id="text-draw-colors" class="text-colors draw-colors" role="group" aria-label="Drawing colors" data-i18n-aria-label="html.format.drawColors"></div>
+                </div>
+              </div>
+              <div class="popover-anchor">
+                <button id="insert-button" class="tool" aria-label="Insert" data-i18n-aria-label="html.insert.label" data-hint="Insert" data-i18n-hint="html.insert.label" data-expand="insert-panel" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" /><path d="M12 8.5v7M8.5 12h7" /></svg>
+                </button>
+                <div id="insert-panel" class="popover glass menu-panel" hidden>
+                  <button type="button" data-insert="ordered"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6h10M10 12h10M10 18h10M4 5h1.5v4M4 9h3M4 15.5c0-.8.7-1.5 1.5-1.5s1.5.6 1.5 1.3c0 1.2-3 1.7-3 3.7h3" /></svg><span data-i18n="html.insert.ordered">Numbered list</span></button>
+                  <button type="button" data-insert="tasks"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="5" height="5" rx="1.2" /><path d="M4.8 7l1.2 1.2L8 6M12 7h8M12 17h8" /><rect x="3.5" y="14.5" width="5" height="5" rx="1.2" /></svg><span data-i18n="html.insert.tasks">Task list</span></button>
+                  <button type="button" data-insert="table"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5" /><path d="M3.5 9.5h17M3.5 14.5h17M9.5 9.5v10M15 9.5v10" /></svg><span data-i18n="html.insert.table">Table with calculations</span></button>
+                  <button type="button" data-insert="line"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16" /></svg><span data-i18n="html.insert.line">Divider line</span></button>
+                </div>
+              </div>
+              <span class="divider" aria-hidden="true"></span>
+              <button id="text-box-tool" class="tool" aria-pressed="false" aria-label="Text box" data-i18n-aria-label="html.toolbar.textBox" data-hint="Text box: tap where you want to write" data-i18n-hint="html.toolbar.textBoxHint">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5" stroke-dasharray="3 2.4" /><path d="M9 9.5h6M12 9.5v6" /></svg>
+              </button>
+            </div>
+
+            <div id="draw-tools" class="tools" hidden>
+              <!-- Each tool has its settings in its own panel: it opens with a click on the tool. -->
+              <div class="popover-anchor">
+                <button id="pen-tool" class="tool" aria-pressed="true" aria-label="Pen" data-hint="Pen: width and transparency" data-i18n-hint="html.pen.hint" data-expand="pen-panel" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L15.8 5a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.7 18.5z" /><path d="M14 6.8l3.2 3.2" /></svg>
+                </button>
+                <div id="pen-panel" class="popover glass size-panel" hidden>
+                  <p class="popover-label size-title" data-i18n="html.pen.title">Pen</p>
+                  <div class="size-preview"><span></span></div>
+                  <span class="size-label" data-i18n="html.pen.width">Width</span>
+                  <input id="size-range" type="range" min="1" max="60" step="1" aria-label="Pen width" data-i18n-aria-label="html.pen.widthLabel" />
+                  <span id="size-value" class="size-value"></span>
+                  <span class="size-label" data-i18n="html.pen.transparency">Transparency</span>
+                  <input id="clear-range" type="range" min="0" max="95" step="5" aria-label="Pen transparency" data-i18n-aria-label="html.pen.transparencyLabel" />
+                  <span id="clear-value" class="size-value"></span>
+                  <label class="popover-check"><input id="streamline" type="checkbox" /> <span data-i18n="html.pen.streamline">Stroke smoothing</span></label>
+                  <label class="popover-check"><input id="ink-front" type="checkbox" /> <span data-i18n="html.pen.front">Draw over the text</span></label>
+                  <p class="popover-note" data-i18n="html.pen.note">Changes only what you draw from now on.</p>
+                </div>
+              </div>
+              <div class="popover-anchor">
+                <button id="blend-tool" class="tool" aria-pressed="false" aria-label="Blend colors" data-i18n-aria-label="html.blend.label" data-hint="Blend colors" data-i18n-hint="html.blend.label" data-expand="blend-panel" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="10" r="5" /><circle cx="15" cy="10" r="5" /><circle cx="12" cy="15" r="5" /></svg>
+                </button>
+                <div id="blend-panel" class="popover glass size-panel blend-panel" hidden>
+                  <p class="popover-label size-title" data-i18n="html.blend.title">Blend</p>
+                  <div class="segmented blend-modes" role="radiogroup" aria-label="How to blend" data-i18n-aria-label="html.blend.how">
+                    <button type="button" role="radio" data-effect="watercolor" data-i18n="html.blend.watercolor">Watercolor</button>
+                    <button type="button" role="radio" data-effect="blur" data-i18n="html.blend.blur">Blur</button>
+                    <button type="button" role="radio" data-effect="smudge" data-i18n="html.blend.smudge">Smudge</button>
+                  </div>
+                  <p id="blend-note" class="popover-note"></p>
+                  <span class="size-label" data-i18n="html.draw.size">Size</span>
+                  <input id="blend-size" type="range" min="4" max="120" step="1" aria-label="Blend size" data-i18n-aria-label="html.blend.sizeLabel" />
+                  <span id="blend-size-value" class="size-value"></span>
+                  <span class="size-label" data-i18n="html.draw.strength">Strength</span>
+                  <input id="blend-strength" type="range" min="5" max="100" step="5" aria-label="Blend strength" data-i18n-aria-label="html.blend.strengthLabel" />
+                  <span id="blend-strength-value" class="size-value"></span>
+                  <p class="popover-note" data-i18n="html.blend.note">Blends on the layer chosen in the pen: behind or over the text.</p>
+                </div>
+              </div>
+              <div class="popover-anchor">
+                <button id="eraser" class="tool" aria-pressed="false" aria-label="Eraser" data-hint="Eraser: size and strength" data-i18n-hint="html.eraser.hint" data-expand="eraser-panel" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 20h12M4.5 15.5l9-9a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 18H7l-2.5-2.5z" /></svg>
+                </button>
+                <div id="eraser-panel" class="popover glass size-panel for-eraser" hidden>
+                  <p class="popover-label size-title" data-i18n="html.eraser.title">Eraser</p>
+                  <div class="size-preview"><span></span></div>
+                  <span class="size-label" data-i18n="html.draw.size">Size</span>
+                  <input id="eraser-size" type="range" min="4" max="120" step="1" aria-label="Eraser size" data-i18n-aria-label="html.eraser.sizeLabel" />
+                  <span id="eraser-size-value" class="size-value"></span>
+                  <span class="size-label" data-i18n="html.draw.strength">Strength</span>
+                  <input id="eraser-strength" type="range" min="5" max="100" step="5" aria-label="Eraser strength" data-i18n-aria-label="html.eraser.strengthLabel" />
+                  <span id="eraser-strength-value" class="size-value"></span>
+                  <p class="popover-note" data-i18n="html.eraser.note">At lower strength, the eraser lightens instead of erasing completely.</p>
+                </div>
+              </div>
+              <span class="divider" aria-hidden="true"></span>
+              <div class="popover-anchor">
+                <button id="color-button" class="tool color-button" aria-label="Color" data-hint="Color" data-i18n-hint="html.color.label" data-expand="color-panel" aria-expanded="false">
+                  <span class="color-dot" aria-hidden="true"></span>
+                </button>
+                <div id="color-panel" class="popover glass color-panel" hidden>
+                  <p class="popover-label" data-i18n="html.color.basics">Basics</p>
+                  <div id="basic-colors" class="favorites basics" role="radiogroup" aria-label="Basic colors" data-i18n-aria-label="html.color.basicsLabel"></div>
+                  <p class="popover-label" data-i18n="html.color.favorites">Favorites</p>
+                  <div id="favorites" class="favorites" role="radiogroup" aria-label="Favorite colors" data-i18n-aria-label="html.color.favoritesLabel"></div>
+                  <p class="popover-label" data-i18n="html.color.mix">Mix a color</p>
+                  <div id="color-field" class="color-field" role="slider" tabindex="0" aria-label="Saturation and brightness" data-i18n-aria-label="html.color.field">
+                    <span class="color-thumb" aria-hidden="true"></span>
+                  </div>
+                  <input id="hue-range" class="hue-range" type="range" min="0" max="359" step="1" aria-label="Hue" data-i18n-aria-label="html.color.hue" />
+                  <div class="color-row">
+                    <span class="color-chip" aria-hidden="true"></span>
+                    <input id="custom-color" class="hex-input" type="text" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Color code" data-i18n-aria-label="html.color.hex" />
+                    <button id="pick-color" class="icon-button pick-color" type="button" aria-label="Pick a color from the screen" data-i18n-aria-label="html.color.pick" title="Pick a color from the screen" data-i18n-title="html.color.pick">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5l4 4M16.5 3.5a2.1 2.1 0 0 1 3 3l-2 2-3-3z" /><path d="M14.5 7.5l-8.6 8.6L5 19l2.9-.9 8.6-8.6" /></svg>
+                    </button>
+                    <button id="pin-color" class="text-button pin-color" type="button">Pin</button>
+                  </div>
+                  <p id="favorites-note" class="popover-note"></p>
+                  <button id="open-palettes" class="text-button open-palettes" type="button" aria-expanded="false">Color palettes</button>
+                </div>
+              </div>
+              <div class="popover-anchor">
+                <button id="shape-button" class="tool" aria-label="Shapes" data-i18n-aria-label="html.shapes.label" data-hint="Shapes" data-i18n-hint="html.shapes.label" data-expand="shape-panel" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 5 2 8-4s5 0 8-3" /></svg>
+                </button>
+                <div id="shape-panel" class="popover glass shape-panel" hidden>
+                  <div class="segmented shapes" role="radiogroup" aria-label="Shapes" data-i18n-aria-label="html.shapes.label">
+                    <button type="button" data-shape="free" role="radio" aria-label="Freehand" data-i18n-aria-label="html.shapes.free" title="Freehand" data-i18n-title="html.shapes.free"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 5 2 8-4s5 0 8-3" /></svg></button>
+                    <button type="button" data-shape="line" role="radio" aria-label="Line" data-i18n-aria-label="html.shapes.line" title="Line" data-i18n-title="html.shapes.line"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19L19 5" /></svg></button>
+                    <button type="button" data-shape="rect" role="radio" aria-label="Rectangle" data-i18n-aria-label="html.shapes.rect" title="Rectangle" data-i18n-title="html.shapes.rect"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6.5" width="15" height="11" rx="1.5" /></svg></button>
+                    <button type="button" data-shape="ellipse" role="radio" aria-label="Ellipse" data-i18n-aria-label="html.shapes.ellipse" title="Ellipse" data-i18n-title="html.shapes.ellipse"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="8" ry="6" /></svg></button>
+                  </div>
+                  <div class="shape-options">
+                    <label class="popover-check"><input id="shape-outline" type="checkbox" /> <span data-i18n="html.shapes.outline">Outline</span></label>
+                    <span class="size-label" data-i18n="html.shapes.width">Thickness</span>
+                    <input id="shape-size" type="range" min="1" max="40" step="1" aria-label="Outline thickness" data-i18n-aria-label="html.shapes.widthLabel" />
+                    <span id="shape-size-value" class="size-value"></span>
+                    <label class="popover-check"><input id="shape-fill" type="checkbox" /> <span data-i18n="html.shapes.fill">Fill</span></label>
+                    <div id="shape-fill-colors" class="text-colors draw-colors shape-fill-colors" role="radiogroup" aria-label="Fill color" data-i18n-aria-label="html.shapes.fillColor"></div>
+                    <span class="size-label" data-i18n="html.pen.transparency">Transparency</span>
+                    <input id="shape-clear" type="range" min="0" max="95" step="5" aria-label="Shape transparency" data-i18n-aria-label="html.shapes.transparencyLabel" />
+                    <span id="shape-clear-value" class="size-value"></span>
+                  </div>
+                  <p class="popover-note" data-i18n="html.shapes.objects">A shape stays as an object: click it to move it or pull its handles; Delete removes it. The outline takes the color you have chosen.</p>
+                  <p class="popover-note" data-i18n="html.shapes.shift">With Shift: squares, circles and straight lines.</p>
+                  <label class="popover-check"><input id="ink-snap" type="checkbox" /> <span data-i18n="html.shapes.snap">Center guides</span></label>
+                  <p class="popover-note" data-i18n="html.shapes.snapNote">Shapes snap to the center of the page and lines stay straight: for symmetrical work.</p>
+                </div>
+              </div>
+              <span class="divider" aria-hidden="true"></span>
+              <button id="undo-ink" class="tool" aria-label="Undo" data-i18n-aria-label="html.toolbar.undo" data-hint="Undo" data-i18n-hint="html.toolbar.undo">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5" /><path d="M4 9h10a6 6 0 0 1 0 12h-3" /></svg>
+              </button>
+              <button id="redo-ink" class="tool" aria-label="Redo" data-i18n-aria-label="html.toolbar.redo" data-hint="Redo" data-i18n-hint="html.toolbar.redo">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14l5-5-5-5" /><path d="M20 9H10a6 6 0 0 0 0 12h3" /></svg>
+              </button>
+            </div>
+
+            <span class="divider" aria-hidden="true"></span>
+            <button id="insert-image" class="tool" aria-label="Add image" data-i18n-aria-label="html.toolbar.addImage" data-hint="Image" data-i18n-hint="html.toolbar.image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3" /><circle cx="9" cy="10" r="1.6" /><path d="M21 16l-5-5-9 9" /></svg>
+            </button>
+            <input id="image-input" type="file" accept="image/*" hidden />
+          </div>
+
+          <!-- Palettes: they open from the color, and hide or stay pinned to keep them at hand while drawing. -->
+          <aside id="palette-drawer" class="palette-drawer glass" aria-label="Color palettes" data-i18n-aria-label="html.palettes.label" hidden>
+            <div class="palette-head">
+              <span class="palette-title" data-i18n="html.palettes.title">Palettes</span>
+              <button id="pin-palettes" class="icon-button" type="button" aria-pressed="false" aria-label="Pin the palettes" data-i18n-aria-label="html.palettes.pin" title="Pin: they stay in view while you draw" data-i18n-title="html.palettes.pinTitle">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 5 3 3v2H7v-2l3-3-1-5z" /><path d="M12 14v6" /></svg>
+              </button>
+              <button id="close-palettes" class="icon-button" type="button" aria-label="Hide the palettes" data-i18n-aria-label="html.palettes.hide" title="Hide" data-i18n-title="html.palettes.hideTitle">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" /></svg>
+              </button>
+            </div>
+            <div id="palettes" class="palettes"></div>
+          </aside>
+
+          <div class="topbar-end">
+            <span id="status" class="status" aria-live="polite"></span>
+            <div class="popover-anchor">
+              <button id="sheet-button" class="icon-button glass round" aria-label="Pages" data-i18n-aria-label="html.sheet.label" data-hint="Pages" data-i18n-hint="html.sheet.label" data-hint-side="left" data-expand="sheet-panel" data-expand-on="click" aria-expanded="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3.5" width="11" height="14" rx="2" /><path d="M5 7v11.5A2 2 0 0 0 7 20.5h9" /></svg>
+              </button>
+              <div id="sheet-panel" class="popover glass end-panel sheet-panel" hidden>
+                <p id="sheet-where" class="sheet-where"></p>
+                <div class="menu-panel sheet-actions">
+                  <button type="button" data-sheet="add"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="17" rx="2" /><path d="M12 9v6M9 12h6" /></svg><span data-i18n="html.sheet.add">Add a page below</span></button>
+                  <button type="button" data-sheet="duplicate"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3.5" width="11" height="14" rx="2" /><path d="M5 7v11.5A2 2 0 0 0 7 20.5h9" /></svg><span data-i18n="html.sheet.duplicate">Duplicate this page</span></button>
+                  <button type="button" data-sheet="remove"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="17" rx="2" /><path d="M9 12h6" /></svg><span>Remove this page</span></button>
+                </div>
+                <p class="popover-label" data-i18n="html.sheet.size">Page size</p>
+                <div id="sheet-sizes" class="sheet-sizes" role="radiogroup" aria-label="Page size" data-i18n-aria-label="html.sheet.size"></div>
+                <div class="segmented sheet-turn" role="radiogroup" aria-label="Orientation" data-i18n-aria-label="html.sheet.orientation">
+                  <button type="button" role="radio" data-turn="portrait" data-i18n="html.sheet.portrait">Portrait</button>
+                  <button type="button" role="radio" data-turn="landscape" data-i18n="html.sheet.landscape">Landscape</button>
+                </div>
+                <div class="sheet-custom">
+                  <label><span data-i18n="html.sheet.width">Width</span><input id="sheet-width" type="number" min="5.3" max="105.8" step="0.1" inputmode="decimal" /></label>
+                  <span aria-hidden="true">×</span>
+                  <label><span data-i18n="html.sheet.height">Height</span><input id="sheet-height" type="number" min="5.3" max="105.8" step="0.1" inputmode="decimal" /></label>
+                  <span class="sheet-unit">cm</span>
+                </div>
+                <label class="popover-check"><input id="auto-pages" type="checkbox" /> <span data-i18n="html.sheet.autoPages">Add pages on their own when you reach the end</span></label>
+              </div>
+            </div>
+            <div class="popover-anchor">
+              <button id="export-button" class="icon-button glass round" aria-label="Export" data-i18n-aria-label="html.export.label" data-hint="Export or print" data-i18n-hint="html.export.hint" data-hint-side="left" data-expand="export-panel" aria-expanded="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 8.5L12 4l4.5 4.5" /><path d="M5 14v4.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V14" /></svg>
+              </button>
+              <div id="export-panel" class="popover glass menu-panel end-panel" hidden>
+                <button type="button" data-export="pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4.5 4.5v11a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z" /><path d="M13.5 3.5V8.5h5M8.5 13h7M8.5 16.5h5" /></svg><span data-i18n="html.export.pdf">PDF or print</span></button>
+                <button type="button" data-export="png"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3" /><circle cx="9" cy="10" r="1.6" /><path d="M21 16l-5-5-9 9" /></svg><span data-i18n="html.export.png">Drawing as an image (PNG)</span></button>
+                <button type="button" data-export="md"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 10h14M5 14h9M5 18h6" /></svg><span data-i18n="html.export.md">Text (Markdown)</span></button>
+                <p class="popover-note" data-i18n="html.export.note">What you export leaves the encrypted space: keep it wherever you like.</p>
+              </div>
+            </div>
+            <div class="popover-anchor">
+              <button id="quick-note" class="icon-button glass round" aria-label="Quick note" data-i18n-aria-label="html.quickNote.title" data-hint="Quick note" data-i18n-hint="html.quickNote.title" data-hint-side="left" aria-haspopup="dialog">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3.5 3.5v13a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z" /><path d="M14.5 3.5V7.5h4M12 11v6M9 14h6" /></svg>
+              </button>
+              <div id="quick-note-panel" class="popover glass quick-panel" role="dialog" aria-labelledby="quick-title" hidden>
+                <p id="quick-title" class="quick-title" data-i18n="html.quickNote.title">Quick note</p>
+                <textarea id="quick-text" rows="5" aria-label="Note text" data-i18n-aria-label="html.quickNote.text"></textarea>
+                <div class="quick-row">
+                  <label class="quick-dest">
+                    <span data-i18n="html.quickNote.dest">Destination</span>
+                    <select id="quick-dest" aria-label="Note destination" data-i18n-aria-label="html.quickNote.destLabel"></select>
+                  </label>
+                  <button id="quick-send" class="primary" type="button" data-i18n="html.quickNote.send">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- With no projects, the first thing is to start one. -->
+        <section id="welcome" class="welcome" aria-labelledby="welcome-title" hidden>
+          <div class="welcome-card glass">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <h2 id="welcome-title" data-i18n="html.welcome.title">Start a project</h2>
+            <p data-i18n="html.welcome.body">A project gathers the files and notes of one idea: a novel, a piece of research, a business, a universe.</p>
+            <div class="welcome-row">
+              <input id="welcome-name" type="text" maxlength="60" placeholder="Project name" data-i18n-placeholder="html.welcome.name" aria-label="Project name" data-i18n-aria-label="html.welcome.name" autocomplete="off" />
+              <button id="welcome-start" class="primary" type="button" data-i18n="html.welcome.start">Start</button>
+            </div>
+            <button id="welcome-trash" class="text-button" type="button" hidden data-i18n="html.welcome.trash">Or recover one from the trash</button>
+          </div>
+        </section>
+
+        <!-- One or two panes, each with its document (see src/pane.ts). -->
+        <div id="panes" class="panes"></div>
+      </main>
+    </div>
+
+    <div id="roots" class="overlay roots-overlay" hidden>
+      <div class="panel roots-panel glass" role="dialog" aria-modal="true" aria-labelledby="roots-title">
+        <div class="panel-header">
+          <div>
+            <h2 id="roots-title">Roots</h2>
+            <p class="roots-legend">
+              <span class="assumption-chip accept" data-i18n="html.roots.accept">I accept it</span>
+              <span class="assumption-chip break" data-i18n="html.roots.break">I want to break it</span>
+              <span class="assumption-chip unknown" data-i18n="html.roots.unknown">I don't know</span>
+            </p>
+          </div>
+          <button id="close-roots" class="icon-button" aria-label="Close" data-i18n-aria-label="html.close">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+        </div>
+        <div id="roots-map" class="roots-map"></div>
+      </div>
+    </div>
+
+    <!-- The gear: everything that can be set lives here, in one place. -->
+    <div id="settings" class="overlay" hidden>
+      <div class="panel settings-panel glass" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <nav class="settings-nav" aria-label="Sections" data-i18n-aria-label="html.settings.sections">
+          <h2 id="settings-title" data-i18n="html.sidebar.settings">Settings</h2>
+          <button type="button" class="settings-tab" data-tab="sky" aria-selected="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3" /><path d="M9 2.5v1.2M3.5 8h1.2M5.1 4.1l.8.8M12.9 4.1l-.8.8" /><path d="M8 19h9.5a3.5 3.5 0 0 0 .4-7 5 5 0 0 0-9.6 1.2A3 3 0 0 0 8 19z" /></svg><span data-i18n="html.settings.sky">Sky</span>
+          </button>
+          <button type="button" class="settings-tab" data-tab="security" aria-selected="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5V6l7-3z" /><path d="M9.5 12l2 2 3.5-4" /></svg><span data-i18n="html.settings.security">Security</span>
+          </button>
+          <button type="button" class="settings-tab" data-tab="language" aria-selected="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.3 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.3-3.5-8.5s1.1-6.1 3.5-8.5z" /></svg><span data-i18n="html.settings.language">Language</span>
+          </button>
+          <span class="settings-spacer"></span>
+          <p class="session">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></svg>
+            <span id="session-user" class="session-user"></span>
+          </p>
+          <button id="lock-now" type="button" class="settings-tab lock-now">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg><span data-i18n="html.settings.lock">Lock</span><kbd>Ctrl+L</kbd>
+          </button>
+          <button id="sign-out" type="button" class="settings-tab lock-now">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5H7A1.5 1.5 0 0 0 5.5 6v12A1.5 1.5 0 0 0 7 19.5h7" /><path d="M11 12h9M16.5 8.5 20 12l-3.5 3.5" /></svg><span data-i18n="html.settings.signOut">Sign out</span>
+          </button>
+        </nav>
+        <div class="settings-body">
+          <button id="close-settings" class="icon-button settings-close" aria-label="Close" data-i18n-aria-label="html.close">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+          <section class="settings-section" data-section="sky">
+            <h3 data-i18n="html.settings.sky">Sky</h3>
+            <p data-i18n="html.sky.intro">Every palette is a sky. Change it whenever you like.</p>
+            <div id="sky-grid" class="sky-grid" role="radiogroup" aria-label="Skies" data-i18n-aria-label="html.sky.skies"></div>
+          </section>
+          <section class="settings-section" data-section="language" hidden>
+            <h3 data-i18n="html.settings.language">Language</h3>
+            <p data-i18n="html.language.intro">The language of OuraBox. What you wrote stays as you wrote it.</p>
+            <div id="language-choices" class="segmented languages" role="radiogroup" aria-label="Language" data-i18n-aria-label="html.settings.language"></div>
+            <p class="settings-note" data-i18n="html.language.note">Changing it reopens the window in a moment. Everything is saved first, and you come back to the same place.</p>
+          </section>
+          <section class="settings-section" data-section="security" hidden>
+            <h3 data-i18n="html.settings.security">Security</h3>
+            <p data-i18n="html.security.intro">Your ideas are saved encrypted. Here you decide how they are protected.</p>
+            <section class="security-section">
+              <h3 data-i18n="html.security.users">Users on this computer</h3>
+              <p data-i18n="html.security.usersBody">Each person signs in with their username and password to their own encrypted space. No one can see the others' spaces, or which users there are: to sign in you have to type the name.</p>
+              <div class="security-form">
+                <button id="add-user" class="primary" type="button" data-i18n="html.security.addUser">Add another user…</button>
+                <button id="delete-user" class="link danger-link" type="button" aria-expanded="false" aria-controls="delete-user-form" data-i18n="html.security.deleteUser">Delete this user…</button>
+              </div>
+              <form id="delete-user-form" class="security-form delete-user-form" autocomplete="off" novalidate hidden></form>
+            </section>
+            <section class="security-section">
+              <h3 data-i18n="html.security.autoLock">Auto-lock</h3>
+              <p data-i18n="html.security.autoLockBody">If you don't use OuraBox for this long, it locks itself.</p>
+              <div id="autolock-options" class="segmented" role="radiogroup" aria-label="Lock after" data-i18n-aria-label="html.security.autoLockLabel"></div>
+            </section>
+            <section class="security-section">
+              <h3 data-i18n="html.security.backup">Encrypted backup</h3>
+              <p data-i18n="html.security.backupBody">A file with your whole space, encrypted. Keep it wherever you like, such as a USB drive or Google Drive: without your password it can't be read. To use it on another computer, open it when you create your space there.</p>
+              <div class="security-form">
+                <button id="export-copy" class="primary" type="button" data-i18n="security.export">Create a backup…</button>
+                <p id="export-message" class="lock-error" role="status"></p>
+              </div>
+            </section>
+            <section class="security-section">
+              <h3 data-i18n="html.security.changePassword">Change password</h3>
+              <p data-i18n="html.security.changePasswordBody">Your documents don't change; only the password that opens them. Your recovery key still works.</p>
+              <form id="password-form" class="security-form" autocomplete="off" novalidate></form>
+            </section>
+            <section class="security-section">
+              <h3 data-i18n="html.security.recoveryKey">Recovery key</h3>
+              <p data-i18n="html.security.recoveryKeyBody">If you lost your key or want a new one, create another. The old one stops opening this space; the backups you already made still open with the key they had.</p>
+              <form id="recovery-form" class="security-form" autocomplete="off" novalidate></form>
+            </section>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div id="lock-screen" class="lock-screen" hidden>
+      <form id="lock-card" class="lock-card glass" autocomplete="off" novalidate></form>
+      <label class="lock-language">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.3 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.3-3.5-8.5s1.1-6.1 3.5-8.5z" /></svg>
+        <select id="lock-language" aria-label="Language" data-i18n-aria-label="html.settings.language"></select>
+      </label>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

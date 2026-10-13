@@ -1,0 +1,173 @@
+/* Free text boxes: handles, the box tool and handwritten italic. */
+
+/* ---------- Free text boxes ---------- */
+
+.boxes {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.text-box {
+  --k: calc(var(--inv) / var(--s, 1));
+  position: absolute;
+  pointer-events: auto;
+  font-size: 17px;
+  line-height: 1.6;
+  transform-origin: 0 0;
+}
+
+.box-text {
+  min-height: 1.6em;
+  padding: 0.15em 0.3em;
+  border-radius: 0.3em;
+  outline: none;
+  overflow-wrap: anywhere;
+  caret-color: var(--accent);
+  box-shadow: 0 0 0 calc(1px * var(--k)) transparent;
+  transition: box-shadow 0.2s var(--ease);
+}
+
+.text-box:hover .box-text,
+.box-text:focus {
+  box-shadow: 0 0 0 calc(1px * var(--k)) color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.box-text:empty::before {
+  content: var(--label-write-here, "Write here");
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* The handle to move and the edge to widen: the same size on
+   screen at any zoom. */
+.box-grip {
+  position: absolute;
+  left: calc(-22px * var(--k));
+  top: calc(2px * var(--k));
+  width: calc(16px * var(--k));
+  height: calc(16px * var(--k));
+  border-radius: calc(5px * var(--k));
+  background:
+    radial-gradient(circle, var(--muted) 18%, transparent 22%) 0 0 / 33.3% 33.3%,
+    color-mix(in srgb, var(--accent-soft) 85%, transparent);
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+
+.box-resize {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(-5px * var(--k));
+  width: calc(10px * var(--k));
+  cursor: ew-resize;
+}
+
+.text-box:hover .box-grip,
+.text-box:focus-within .box-grip,
+.text-box.moving .box-grip {
+  opacity: 1;
+}
+
+.text-box.moving .box-grip {
+  cursor: grabbing;
+}
+
+.drawing .boxes {
+  pointer-events: none;
+}
+
+.drawing .text-box {
+  pointer-events: none;
+}
+
+/* With the box tool ready, the cursor says so. */
+.placing-box .page {
+  cursor: crosshair;
+}
+
+.page.appear {
+  animation: rise 0.55s var(--ease-out);
+}
+
+.editor {
+  min-height: 2em;
+  outline: none;
+  font-family: var(--reading-font, var(--font));
+  font-size: var(--reading-size, 17px);
+  line-height: 1.75;
+  letter-spacing: -0.003em;
+  caret-color: var(--accent);
+  overflow-wrap: break-word;
+}
+
+.editor.empty::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  color: var(--muted);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.editor h1 {
+  font-size: 2.1em;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0.1em 0 0.5em;
+}
+
+.editor h2 {
+  font-size: 1.4em;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  margin: 1.2em 0 0.4em;
+}
+
+.editor p,
+.editor div {
+  margin: 0;
+}
+
+.editor ul,
+.editor ol {
+  padding-left: 1.4em;
+}
+
+.editor blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 3px solid var(--faint);
+  color: var(--muted);
+}
+
+.editor img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.2em 0;
+  border-radius: 14px;
+}
+
+/* Italic is handwritten, as if written by hand. It is a smaller typeface at
+   the same size, so it is enlarged a little; the line height doesn't change. */
+.editor i,
+.editor em,
+.box-text i,
+.box-text em {
+  font-family: "OuraBox Manuscrita", cursive;
+  font-style: normal;
+  font-size: 1.24em;
+  line-height: 1;
+}
+
+.tool[data-command="italic"] i {
+  font-family: "OuraBox Manuscrita", cursive;
+  font-style: normal;
+  font-size: 19px;
+  font-weight: 600;
+}

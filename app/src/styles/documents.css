@@ -1,0 +1,243 @@
+/* The quick note and each document row in the list with its actions. */
+
+/* The quick note: opens below its button, without leaving what you are doing. */
+.popover.quick-panel {
+  left: auto;
+  right: 0;
+  width: 320px;
+  transform: none;
+  animation: quick-in 0.25s var(--ease-out);
+}
+
+.popover.end-panel {
+  left: auto;
+  right: 0;
+  width: 250px;
+  transform: none;
+  animation: quick-in 0.25s var(--ease-out);
+}
+
+.end-panel .popover-note {
+  margin: 6px 10px 4px;
+}
+
+@keyframes quick-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+.quick-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.quick-panel textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 96px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--faint) 90%, transparent);
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--page);
+  outline: none;
+}
+
+.quick-panel textarea:focus {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.quick-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.quick-dest {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.quick-dest select {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--faint) 90%, transparent);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--page);
+}
+
+.quick-row .primary {
+  padding: 9px 18px;
+  font-size: 14px;
+}
+
+.group-item .doc-action {
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+
+.group-item:hover .doc-action,
+.group-item .doc-action:focus-visible {
+  opacity: 1;
+}
+
+.group-item .doc-action svg {
+  width: 14px;
+  height: 14px;
+}
+
+
+.move-menu button {
+  padding: 2px 0;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.move-menu button.muted {
+  color: var(--muted);
+}
+
+.doc-open {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 28px;
+  padding: 4px 10px 4px calc(var(--indent, 0px) + 26px);
+  text-align: left;
+}
+
+.doc-icon {
+  flex: none;
+  display: grid;
+  color: var(--muted);
+}
+
+.doc-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.doc-item.active .doc-icon {
+  color: var(--accent);
+}
+
+.doc-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 450;
+}
+
+.doc-date {
+  flex: none;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Search results do get two lines: the title and where it appears. */
+.result-item .doc-open {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding: 7px 10px;
+}
+
+/* Each document's actions only appear on hover: the list
+   stays clean the rest of the time. */
+.doc-actions {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: flex;
+  gap: 2px;
+  padding-left: 16px;
+  background: linear-gradient(90deg, transparent, var(--accent-soft) 14px);
+  border-radius: 0 10px 10px 0;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 0.2s var(--ease);
+}
+
+.doc-item:hover .doc-actions,
+.doc-actions:focus-within {
+  opacity: 1;
+}
+
+.doc-action {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.doc-action svg {
+  width: 16px;
+  height: 16px;
+}
+
+.doc-action:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--page) 60%, transparent);
+}
+
+.doc-action.danger:hover {
+  color: var(--danger);
+}
+
+/* A document open in the other pane is marked with a discreet dot. */
+.doc-item.open:not(.active) .doc-title::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+  vertical-align: middle;
+}
+
+.doc-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.doc-confirm span {
+  width: 100%;
+  color: var(--muted);
+}
+
+.doc-confirm .danger {
+  color: var(--danger);
+  font-weight: 600;
+}

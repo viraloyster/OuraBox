@@ -1,0 +1,317 @@
+/* Panels that open from toolbar buttons: menus, paragraph style, shape options. */
+
+/* Panels that open from a button: colors and thickness. */
+.popover-anchor {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  z-index: 30;
+  width: 272px;
+  padding: 14px;
+  border-radius: 18px;
+  transform: translateX(-50%);
+  box-shadow: var(--shadow-page);
+  animation: popover-in 0.25s var(--ease-out);
+}
+
+.popover[hidden] {
+  display: none;
+}
+
+.popover-label {
+  margin: 10px 2px 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.popover-label:first-child {
+  margin-top: 0;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 3px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--faint) 40%, transparent);
+}
+
+.segmented button {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.segmented button:hover {
+  color: var(--text);
+}
+
+.segmented button[aria-checked="true"] {
+  color: var(--accent);
+  background: var(--page);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.segmented svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Paragraph style: shows the current one; the menu shows how each one looks. */
+.style-button {
+  display: inline-flex;
+  gap: 1px;
+  padding: 0 5px 0 9px;
+}
+
+.style-current {
+  min-width: 20px;
+  text-align: center;
+}
+
+.style-caret {
+  width: 13px;
+  height: 13px;
+  opacity: 0.7;
+}
+
+.style-panel {
+  width: 200px;
+}
+
+.style-panel button[aria-checked="true"] {
+  background: var(--accent-soft);
+}
+
+.style-sample {
+  font-size: 14px;
+}
+
+.style-sample.h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.style-sample.h2 {
+  font-size: 16.5px;
+  font-weight: 650;
+}
+
+.segmented.shapes {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.shape-panel {
+  width: 260px;
+}
+
+/* The outline, the fill and the transparency of shapes, with the same look as
+   the pen's settings. Hidden when drawing freehand. */
+.shape-options {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px 12px;
+  margin: 14px 0 6px;
+}
+
+.shape-panel.free .shape-options {
+  display: none;
+}
+
+.shape-options input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.shape-options .popover-check,
+.shape-options .shape-fill-colors {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+/* A line has no inside: no fill for it. */
+.shape-panel:not(.fillable) .shape-options .popover-check:has(#shape-fill),
+.shape-panel:not(.fillable) .shape-fill-colors {
+  display: none;
+}
+
+.shape-options .popover-check:has(input:disabled) {
+  opacity: 0.5;
+}
+
+.shape-fill-colors[hidden] {
+  display: none;
+}
+
+.shape-fill-colors .swatch[aria-checked="true"] {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--swatch);
+}
+
+.text-colors {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* A short menu: each option with its icon and its name. */
+.menu-panel {
+  width: 220px;
+  padding: 6px;
+}
+
+.menu-panel button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.menu-panel button:hover {
+  background: var(--accent-soft);
+}
+
+.menu-panel svg {
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -6px) scale(0.98);
+  }
+}
+
+.popover-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.popover-note {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.popover-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.popover-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
+.text-button {
+  padding: 7px 11px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.text-button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* The current color and the current thickness, on their buttons. */
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--swatch, var(--text));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 0 0 2px var(--page), 0 0 0 3px color-mix(in srgb, var(--faint) 90%, transparent);
+}
+
+.favorites {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.swatch {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.swatch::after {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.swatch:hover::after {
+  transform: scale(1.1);
+}
+
+.swatch[aria-checked="true"] {
+  box-shadow: inset 0 0 0 2px var(--swatch);
+}
+
+.swatch[aria-checked="true"]::after {
+  transform: scale(0.72);
+}
+
+.swatch-remove {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  z-index: 1;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--faint);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+
+.swatch-remove::before {
+  content: "×";
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.swatch:hover .swatch-remove {
+  opacity: 1;
+}

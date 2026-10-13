@@ -1,0 +1,290 @@
+/* The settings dialog, with its security, language and user sections. */
+
+/* ---------- Settings (the gear) ---------- */
+
+/* Solid: with no blur behind it, what's under the dialog would show through. */
+.panel.settings-panel.glass {
+  background: var(--page);
+}
+
+.settings-panel {
+  display: grid;
+  grid-template-columns: 224px 1fr;
+  width: min(940px, 100%);
+  height: min(640px, 100%);
+  padding: 0;
+  overflow: hidden;
+}
+
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 22px 12px 14px;
+  border-right: 1px solid color-mix(in srgb, var(--faint) 70%, transparent);
+  background: color-mix(in srgb, var(--faint) 18%, transparent);
+}
+
+.settings-nav h2 {
+  margin: 0 10px 14px;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.settings-tab svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.settings-tab:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--faint) 40%, transparent);
+}
+
+.settings-tab[aria-selected="true"] {
+  color: var(--text);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+}
+
+.settings-spacer {
+  flex: 1;
+}
+
+.lock-now {
+  white-space: nowrap;
+}
+
+/* Who is signed in, above "Sign out". */
+.session {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.session svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.session-user {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.settings-tab kbd {
+  margin-left: auto;
+  font: inherit;
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.settings-body {
+  position: relative;
+  overflow: auto;
+  padding: 22px 26px 26px;
+}
+
+.settings-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.settings-section > h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.settings-section > p {
+  margin: 4px 48px 18px 0;
+}
+
+.settings-section .security-section:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+@media (max-width: 640px) {
+  .settings-panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .settings-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--faint) 70%, transparent);
+  }
+
+  .settings-nav h2 {
+    width: 100%;
+  }
+
+  .settings-spacer {
+    display: none;
+  }
+}
+
+/* ---------- Security ---------- */
+
+.security-panel {
+  width: min(520px, 100%);
+}
+
+.security-section {
+  padding: 16px 0 4px;
+  border-top: 1px solid color-mix(in srgb, var(--faint) 70%, transparent);
+}
+
+.security-section h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.security-section p {
+  margin: 4px 0 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--faint) 55%, transparent);
+}
+
+.segmented button {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.segmented button[aria-checked="true"] {
+  background: var(--page);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(15, 25, 40, 0.12);
+}
+
+/* ---------- Language ---------- */
+
+.segmented.languages {
+  max-width: 420px;
+}
+
+.settings-section > p.settings-note {
+  margin-top: 12px;
+  font-size: 12.5px;
+}
+
+/* On the sign-in screen: small and quiet, under the card. */
+.lock-language {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 10px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--page) 55%, transparent);
+}
+
+.lock-language[hidden] {
+  display: none;
+}
+
+.lock-language svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.lock-language select {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 12.5px;
+  padding: 3px 2px;
+  cursor: pointer;
+}
+
+.security-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 6px;
+}
+
+.security-form .done {
+  margin: 0;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+/* Deleting a user: quiet until opened, red only where it acts. */
+.danger-link {
+  align-self: flex-start;
+  padding-left: 0;
+}
+
+.danger-link:hover,
+.danger-link[aria-expanded="true"] {
+  color: var(--danger);
+}
+
+.delete-user-form p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.primary.danger {
+  background: var(--danger);
+}
+
+.delete-user-form .link {
+  align-self: flex-start;
+  padding-left: 0;
+}

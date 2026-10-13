@@ -1,0 +1,7 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+# Playwright output (npm run e2e)
+test-results/
+playwright-report/

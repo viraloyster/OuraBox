@@ -1,0 +1,24 @@
+/* OuraBox styles, split by area (see src/styles/). The order is the cascade: keep it. */
+@import "./styles/base.css";
+@import "./styles/sky.css";
+@import "./styles/sidebar.css";
+@import "./styles/search.css";
+@import "./styles/projects.css";
+@import "./styles/switcher.css";
+@import "./styles/documents.css";
+@import "./styles/topbar.css";
+@import "./styles/panels.css";
+@import "./styles/colors.css";
+@import "./styles/panes.css";
+@import "./styles/idea.css";
+@import "./styles/page.css";
+@import "./styles/boxes.css";
+@import "./styles/text.css";
+@import "./styles/text-style.css";
+@import "./styles/pages.css";
+@import "./styles/sky-picker.css";
+@import "./styles/settings.css";
+@import "./styles/lock.css";
+@import "./styles/roots.css";
+@import "./styles/preferences.css";
+@import "./styles/start.css";

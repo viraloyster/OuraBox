@@ -1,0 +1,107 @@
+/* Starting a project, and rename and trash in the list. */
+
+/* ---------- Start a project ----------
+   With no projects, the page makes room for a single question: what it's called. */
+
+.welcome {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: appear 0.4s var(--ease-out) both;
+}
+
+.welcome[hidden] {
+  display: none;
+}
+
+.welcoming .topbar,
+.welcoming .panes {
+  visibility: hidden;
+}
+
+.welcome-card {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  width: min(460px, 100%);
+  padding: 32px;
+  border-radius: 24px;
+}
+
+.welcome-card h2 {
+  margin: 8px 0 0;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.welcome-card p {
+  margin: 0 0 6px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.welcome-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.welcome-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--faint) 90%, transparent);
+  border-radius: 12px;
+  background: var(--page);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+
+.welcome-row input:focus {
+  border-color: var(--accent);
+}
+
+/* ---------- Rename and trash, in the list ---------- */
+
+.rename-row {
+  padding: 3px 6px 3px calc(var(--level, 0) * 12px + 24px);
+}
+
+.rename-input {
+  width: 100%;
+  padding: 6px 9px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--page);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+
+.trash-item .doc-open {
+  padding-left: 12px;
+  cursor: default;
+}
+
+.empty-trash {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.empty-trash:hover {
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+}
+
+.sidebar-actions[hidden] {
+  display: none;
+}

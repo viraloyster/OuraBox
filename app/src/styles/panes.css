@@ -1,0 +1,244 @@
+/* The page area: panes side by side, the active pane, page strips, notes and zoom. */
+
+/* ---------- The page ---------- */
+
+/* ---------- Panes: one or two documents side by side ---------- */
+
+.panes {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* A column of panes: one, or two stacked when there are four. */
+.pane-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.pane-column > .pane {
+  min-height: 0;
+}
+
+/* When dragging a document over a page. */
+.pane.drop-target .scroller {
+  outline: 2px dashed color-mix(in srgb, var(--accent) 70%, transparent);
+  outline-offset: -6px;
+}
+
+.drop-hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 6;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--page);
+  font-weight: 600;
+  font-size: 13.5px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow-page);
+  animation: pill-in 0.2s var(--ease-out);
+}
+
+.pane {
+  --idea-width: 300px;
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+  animation: appear 0.45s var(--ease-out);
+}
+
+/* The active pane, where the toolbar acts, gets a minimal mark. */
+.split .pane.active .page::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.55;
+  transform: translateX(-50%);
+}
+
+.split .pane:not(.active) .page {
+  box-shadow: var(--shadow-soft);
+}
+
+.pane-close {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+
+.pane:hover .pane-close,
+.pane-close:focus-visible {
+  opacity: 1;
+}
+
+/* Above each page, outside it, a thin strip with its buttons:
+   "About this idea" (or "Convert to file" in a note), small and
+   quiet, so they never cover what is written. */
+.pane {
+  padding-top: 26px;
+}
+
+.pane-idea,
+.pane-convert,
+.pane-close {
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.pane-idea svg,
+.pane-convert svg,
+.pane-close svg {
+  width: 15px;
+  height: 15px;
+}
+
+.pane-idea {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  z-index: 2;
+  opacity: 0.4;
+  transition: opacity 0.2s var(--ease);
+}
+
+.split .pane-idea {
+  right: 32px;
+}
+
+.pane-idea:hover,
+.pane-idea:focus-visible,
+.pane-idea.active {
+  opacity: 1;
+}
+
+/* A note is lighter: a narrower page, without "About this idea". */
+.pane-convert {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  z-index: 2;
+  display: none;
+  opacity: 0.4;
+  transition: opacity 0.2s var(--ease);
+}
+
+.split .pane-convert {
+  right: 32px;
+}
+
+.pane-convert:hover,
+.pane-convert:focus-visible {
+  opacity: 1;
+}
+
+.pane.note .pane-convert {
+  display: grid;
+}
+
+.pane.note .pane-idea,
+.pane.note .next-step {
+  display: none;
+}
+
+/* A note is not a file: a small card like a notepad. Plain letters, a
+   little smaller, close margins and a strip of its color along the top. */
+.pane.note .page {
+  padding: 22px 30px 26px;
+  border-radius: 14px;
+  margin-top: 28px;
+}
+
+.pane.note .page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  border-radius: 14px 14px 0 0;
+  background: var(--note-color, color-mix(in srgb, var(--faint) 80%, transparent));
+}
+
+.pane.note .editor {
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* The zoom: quiet in a corner, visible whenever it isn't 100%. */
+.zoom {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--glass-still);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease), right 0.35s var(--ease-out);
+}
+
+.pane:hover .zoom,
+.pane.zoomed .zoom,
+.zoom:focus-within {
+  opacity: 0.85;
+}
+
+.zoom:hover {
+  opacity: 1;
+}
+
+.pane.idea-open .zoom {
+  right: calc(var(--idea-width) + 24px);
+}
+
+.zoom button {
+  display: grid;
+  place-items: center;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.zoom button:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent-soft) 80%, transparent);
+}
+
+.zoom .zoom-level {
+  min-width: 58px;
+}
+
+.zoom svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}

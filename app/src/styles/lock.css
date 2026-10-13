@@ -1,0 +1,223 @@
+/* The door: create a password, unlock and recover. */
+
+/* ---------- The door: create password, unlock, recover ---------- */
+
+body.locked .app {
+  visibility: hidden;
+}
+
+.lock-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow: auto;
+  z-index: 20;
+}
+
+.lock-screen[hidden] {
+  display: none;
+}
+
+.lock-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(420px, 100%);
+  padding: 34px 32px 26px;
+  border-radius: 28px;
+}
+
+.lock-card.appear {
+  animation: rise 0.6s var(--ease-out);
+}
+
+.lock-mark {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 4px;
+}
+
+.lock-card h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.lock-text {
+  margin: -4px 0 6px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.field[hidden] {
+  display: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--muted);
+}
+
+.field input {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text);
+  padding: 11px 14px;
+  border-radius: 13px;
+  border: 1px solid var(--faint);
+  background: var(--page);
+  outline: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.mono {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "DejaVu Sans Mono", monospace;
+  letter-spacing: 0.04em;
+}
+
+.recovery-code {
+  display: block;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+  word-spacing: 0.2em;
+  user-select: all;
+}
+
+.recovery-extras {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recovery-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.recovery-actions .link {
+  color: var(--accent);
+}
+
+.recovery-mail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent-soft) 55%, transparent);
+  animation: appear 0.3s var(--ease-out) both;
+}
+
+.recovery-mail[hidden] {
+  display: none;
+}
+
+.recovery-mail .lock-note {
+  margin: 0;
+}
+
+.secondary {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--page);
+  color: var(--accent);
+  font-weight: 600;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.secondary:hover {
+  border-color: var(--accent);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.lock-note {
+  margin: -4px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.lock-error {
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 13px;
+  color: var(--danger);
+}
+
+.lock-error:empty {
+  display: none;
+}
+
+.primary {
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--page);
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.primary:hover {
+  transform: translateY(-1px);
+}
+
+.primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+.link {
+  align-self: center;
+  padding: 4px 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

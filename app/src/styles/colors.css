@@ -1,0 +1,323 @@
+/* The color picker, palettes, blend modes, eraser cursor and the save notice. */
+
+/* The color picker: roomy favorites and a modern mixer (saturation and
+   brightness in a square, hue in a bar, and the code). */
+.popover.color-panel {
+  width: 312px;
+  padding: 18px;
+}
+
+.color-panel .favorites {
+  gap: 10px;
+}
+
+/* Each swatch fills its cell (never wider than it), so the ring of the chosen
+   one sits centered on it. */
+.color-panel .swatch {
+  width: 100%;
+  max-width: 34px;
+  height: auto;
+  aspect-ratio: 1;
+  justify-self: center;
+  border-radius: 50%;
+}
+
+.color-panel .swatch::after {
+  position: absolute;
+  inset: 3px;
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+}
+
+.color-panel .swatch[aria-checked="true"] {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--swatch);
+}
+
+.color-panel .swatch[aria-checked="true"]::after {
+  transform: none;
+}
+
+/* The basics: in a more compact row, always the same ones. */
+/* The basics: two compact rows, always the same ones. */
+.color-panel .favorites.basics {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px 10px;
+}
+
+.color-panel .basics .swatch {
+  max-width: 30px;
+}
+
+.open-palettes {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Palettes: a separate panel, below the bar on the right. When pinned, it stays
+   in view while drawing; otherwise, it hides when tapping outside. */
+.palette-drawer {
+  position: absolute;
+  top: calc(100% - 4px);
+  right: 0;
+  width: 256px;
+  max-height: calc(100vh - 140px);
+  overflow: auto;
+  padding: 12px 14px 14px;
+  border-radius: 18px;
+  scrollbar-width: thin;
+}
+
+.palette-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.palette-title {
+  flex: 1;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.palette-head .icon-button {
+  width: 28px;
+  height: 28px;
+}
+
+.palette-head .icon-button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.palette-name {
+  margin: 10px 0 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.palette-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.palette-row .swatch {
+  width: 100%;
+  height: 30px;
+}
+
+.palette-row .swatch::after {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+}
+
+.palette-row .swatch[aria-checked="true"] {
+  box-shadow: none;
+}
+
+.palette-row .swatch[aria-checked="true"]::after {
+  transform: none;
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 3.5px var(--accent);
+}
+
+.color-field {
+  --hue: 0;
+  position: relative;
+  height: 148px;
+  border-radius: 14px;
+  background:
+    linear-gradient(to top, #000, transparent),
+    linear-gradient(to right, #fff, hsl(var(--hue) 100% 50%));
+  cursor: crosshair;
+  touch-action: none;
+  outline: none;
+}
+
+.color-field:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.color-thumb {
+  position: absolute;
+  left: calc(var(--sat, 1) * 100%);
+  top: calc((1 - var(--val, 1)) * 100%);
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  background: var(--picked, transparent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hue-range {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 14px;
+  margin: 14px 0 0;
+  border-radius: 7px;
+  background: linear-gradient(to right, #f00, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00);
+  cursor: pointer;
+}
+
+.hue-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  background: hsl(var(--hue, 0) 100% 50%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hue-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  background: hsl(var(--hue, 0) 100% 50%);
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.color-chip {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--picked, transparent);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.hex-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--faint) 80%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--page) 70%, transparent);
+  color: var(--text);
+  font: 500 13.5px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+  text-transform: lowercase;
+  outline: none;
+}
+
+.hex-input:focus {
+  border-color: var(--accent);
+}
+
+.pin-color {
+  flex: none;
+  height: 34px;
+}
+
+.size-panel {
+  width: 240px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.size-preview {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  height: 68px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--faint) 35%, transparent);
+}
+
+.size-preview span {
+  border-radius: 50%;
+  opacity: var(--alpha, 1);
+  background: var(--text);
+}
+
+.size-panel input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.size-label {
+  grid-column: 1 / -1;
+  margin-bottom: -6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.size-value {
+  min-width: 42px;
+  text-align: right;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.size-panel .popover-check,
+.size-panel .popover-note,
+.size-title {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.size-title {
+  margin-bottom: -4px;
+}
+
+/* Blend: the three modes, side by side. */
+.segmented.blend-modes {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.segmented.blend-modes button {
+  font-size: 12.5px;
+  min-width: 0;
+}
+
+.blend-panel {
+  width: 268px;
+}
+
+/* The eraser shows as a hollow circle: it shows how much it covers. */
+.size-panel.for-eraser .size-preview span {
+  background: color-mix(in srgb, var(--muted) 18%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--muted) 80%, transparent);
+}
+
+/* The save notice floats at the bottom center: it doesn't compete with the tools. */
+.status {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 5;
+  font-size: 12px;
+  color: var(--text);
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--glass);
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.status.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
