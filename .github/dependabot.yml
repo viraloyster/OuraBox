@@ -1,5 +1,9 @@
 # Keeps the dependencies up to date, once a week. A new version waits two
 # weeks before it is proposed: time for problems in it to come to light.
+# Only minor versions and fixes are proposed: a major version (a new
+# TypeScript, Vite, or encryption library) changes how things work and is
+# done by hand, reading what changed. That matters most for the encryption:
+# the vault has to keep opening.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -8,18 +12,34 @@ updates:
       interval: weekly
     cooldown:
       default-days: 14
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       interface:
         patterns: ["*"]
+        update-types: [minor, patch]
   - package-ecosystem: cargo
     directory: /app/src-tauri
     schedule:
       interval: weekly
     cooldown:
       default-days: 14
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+      # For crates before 1.0 a "minor" version can change how they work:
+      # the encryption ones only get fixes here.
+      - dependency-name: argon2
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: chacha20poly1305
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: sha2
+        update-types: ["version-update:semver-minor"]
     groups:
       core:
         patterns: ["*"]
+        update-types: [minor, patch]
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -27,3 +47,4 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+        update-types: [minor, patch]
