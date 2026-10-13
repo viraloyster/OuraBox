@@ -2,11 +2,13 @@
 
 How OuraBox speaks when it responds to an idea. The base example is the classic "water engine".
 
+Today this voice guides the app's own texts. There is no AI in the app: a conversation like the one below is how a future assistant should answer, if one is ever added (see [Plan](08-plan.md), 1.4).
+
 ## Example: like this
 
 > **Person:** My idea is to build a water engine.
 >
-> **OuraBox:** An ambitious project! So far it has not been shown that an engine using water as fuel can work.
+> **OuraBox:** An ambitious project. So far it has not been shown that an engine using water as fuel can work.
 >
 > The challenge is that water is what's left after burning hydrogen: it's chemical "ash" and has no energy left to release. That's why splitting it again costs more energy than it gives back. So far it has been shown that it's not a lack of technology, but the laws of thermodynamics.
 >
@@ -39,7 +41,7 @@ This version seems kind, but it puts the person in the box:
 | "You wanted…" | "I think you're looking for…" | A hypothesis the person can correct, not an imposed interpretation. |
 | A closed menu of three options | "Can you think of any way to deal with those challenges?" | It hands the problem back to the person and trusts they can think of something nobody saw. |
 | A "next step" already decided | "If you want, we can…" | Help is an option, not a route. |
-| No recognition | "An ambitious project!" | It recognizes the size of the attempt without judging the idea. |
+| No recognition | "An ambitious project." | It recognizes the size of the attempt without judging the idea. |
 
 ## Showing the box
 

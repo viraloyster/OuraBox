@@ -1,12 +1,12 @@
 # Stage 4: Companies
 
-> **Status: TODO.** It will be planned in detail when the community is working.
+> **Status: idea, not started.** Nothing here is built, and it may never be. If it goes ahead, it would be planned in detail once a community exists and works.
 
 ## Goal
 
 That the talent working in OuraBox finds open doors at companies, and that OuraBox sustains itself financially.
 
-## What we already know
+## What is thought so far
 
 From what we learned from others (see [Lessons](../05-lessons.md)):
 

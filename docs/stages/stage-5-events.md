@@ -1,14 +1,14 @@
 # Stage 5: Remote worldwide events
 
-> **Status: TODO.** It's the long-term ambition, for when OuraBox has grown enough.
+> **Status: idea, not started.** It's the long-term ambition, only for if OuraBox ever grows enough. Nothing here is built, and it may never be.
 
 ## Goal
 
 Remote events open to the whole world, where talent from anywhere can show itself, no matter who they are or what degrees they hold.
 
-## What we already know
+## What is thought so far
 
-- There are precedents showing it works on a human level: Buildspace's global and remote demo days brought together tens of thousands of people (see [Lessons](../05-lessons.md)).
+- There are precedents suggesting it can work on a human level: Buildspace ran global, remote demo days and reached tens of thousands of people (see [Lessons](../05-lessons.md)).
 - They have to be accessible to people with few resources: modest devices and slow connections.
 
 ## Questions to answer before starting

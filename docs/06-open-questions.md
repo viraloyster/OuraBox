@@ -9,9 +9,7 @@ What is still unresolved. When a question is answered, the answer moves to the d
 - How do you "show the box" for an idea that isn't technical (a business, a work of art, a way of organizing something)?
 - When does the AI appear, and when does it stay quiet?
 - Is the definition of "private" proposed in [Technology](07-technology.md) the right one?
-- Do we need to be able to generate a new recovery key?
 - What is the criterion for considering stage 1 validated?
-- Is the concept validated with a simple visual prototype before building the secure core in Rust?
 - Which of the features proposed in [The safe space](09-safe-space.md) go into stage 1?
 - What will the sections finally be called? Direct names that don't confuse.
 - How often does OuraBox notify, and who chooses?
@@ -41,4 +39,4 @@ What is still unresolved. When a question is answered, the answer moves to the d
 - When and where is the OuraBox trademark (name and logo) registered? The code already has a license (see [Technology](07-technology.md), T12), but the license doesn't protect the name.
 - How are donations organized?
 - AI and sync cost money. If users aren't charged, how are they funded?
-- How much Rust experience does the person building it have, and how much external review will be needed?
+- How much external review will the Rust core need, and who can do it?

@@ -19,7 +19,7 @@ They are living documents: they change as the idea matures.
 11. [Economic model](11-economic-model.md): how it sustains itself, without charging users.
 12. [Architecture](12-architecture.md): how the app is built inside and what it guarantees.
 
-The future stages each have their TODO document in [`stages/`](stages/).
+The later stages are ideas, not commitments: nothing in them is built, and they may never be. Each has a short document in [`stages/`](stages/) with what is thought so far and the open questions.
 
 ## Status of each part
 
@@ -28,12 +28,12 @@ The future stages each have their TODO document in [`stages/`](stages/).
 | Vision | Defined |
 | Philosophy | Defined, being polished |
 | Voice | Defined with a base example |
-| Safe space | First version; there are proposals to confirm (stage 1, PC) |
+| Safe space | Desktop app in beta (stage 1, PC); there are proposals to confirm |
 | Design | First version; there are proposals to confirm |
 | Economic model | No charge to users; the rest, in options |
 | Technology | First version; there are decisions to confirm |
 | Plan | Stage 0 in progress; the desktop app (stage 1) is in [beta](08-plan.md#what-beta-means) |
-| Mobile | TODO (stage 2) |
-| Community | TODO (stage 3) |
-| Companies | TODO (stage 4) |
-| Worldwide events | TODO (stage 5) |
+| Mobile | Idea, not started (stage 2) |
+| Community | Idea, not started (stage 3) |
+| Companies | Idea, not started (stage 4) |
+| Worldwide events | Idea, not started (stage 5) |

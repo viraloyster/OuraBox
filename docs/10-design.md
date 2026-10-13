@@ -34,11 +34,11 @@ Legend: **Decided** means agreed; **Proposed** means recommended but still to be
 - **What isn't the page steps aside on its own:** when you touch the page, the list hides (it can be pinned) and only the icon strip remains.
 - **What's used sometimes, one click away:** heading, subheading and normal text live in a single button ("Aa") that shows how each one looks.
 - **Nothing is deleted outright:** what's deleted goes to the trash, in the icon strip.
-- **The useful things, in two panels:** "Format" (alignment, font size and color) and "Insert" (numbered list, task list, table, line) open after a second, like the colors. The table bar only appears with the cursor inside a table. "Shapes" lives inside draw mode and "Export" at the top right. Notes come folded and only one project is shown at a time.
+- **The useful things, in two panels:** "Format" (alignment and color) and "Insert" (numbered list, task list, table, line) open after a second, like the colors. The table bar only appears with the cursor inside a table. "Shapes" lives inside draw mode and "Export" at the top right. Notes come folded and only one project is shown at a time.
 - **No dimming while writing:** a mode that faded everything out while writing was tried and removed: if a quick change is needed, everything has to be where you expect it.
-- **Actions in view only when needed:** in the list, "Move to another project" and "Let it go" appear when hovering over a document; "Rename" and "Remove" when hovering over a project; the "+" for Files and Notes, when hovering over each group.
-- **Projects without noise:** whoever doesn't create projects sees just two groups, Files and Notes. Projects fold and unfold; when a document is opened, its project unfolds on its own.
-- **A note looks lighter** than a file: a narrower page and without the "About this idea" light bulb.
+- **Actions in view only when needed:** in the list, "Rename", "Move to another project", "Let go" and "Move to trash" appear when hovering over a document; "Rename" and "Move to trash" when hovering over a project; the "+" for Files and Notes, when hovering over each group.
+- **Projects without noise:** each project shows just two groups, Files and Notes. Projects fold and unfold; when a document is opened, its project unfolds on its own.
+- **A note looks lighter** than a file: a small card instead of a page, and without the "About this idea" light bulb.
 - **Going deeper into a root** has its own movement: the page moves away upward, the new one rises from below and a soft veil darkens the sky with each level. Whoever turns off animations goes down without movement.
 - **The roots map** draws the branches as roots growing downward, with soft curves.
 - **The zoom** is a small pill at the bottom right of each page, which only appears on hover or when the zoom isn't 100%.

@@ -13,7 +13,7 @@ Others have tried similar things. None became a worldwide success with this exac
 | **Behance, Dribbble** | Design portfolios | They survive, but show the polished result, not the process | The result can be dressed up; the process, much less so. |
 | **Buildspace** (2019–2024) | Open to everyone, seasons to work on your ideas, global and remote demo days | Reached tens of thousands of people and shut down because it couldn't find a way to sustain itself | The vision works on a human level. You have to think early about how it sustains itself without betraying the safe space. |
 | **Blender** | Free and open-source 3D program | Funded by a fund that receives donations from individuals and contributions from companies that use it | A tool can be free for everyone if those who benefit from it sustain it. |
-| **NaNoWriMo** | Annual challenge to write a novel in a month, with a community | Millions of participants for years; shut down in 2025 | Same as Buildspace: community is not enough to sustain the organization. |
+| **NaNoWriMo** | Annual challenge to write a novel in a month, with a community | Hundreds of thousands of participants a year; shut down in 2025 | Same as Buildspace: community is not enough to sustain the organization. |
 
 ## What repeats
 

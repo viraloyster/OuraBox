@@ -1,17 +1,17 @@
 # Stage 2: Safe space on mobile
 
-> **Status: TODO.** It will be planned in detail when stage 1 is about to finish.
+> **Status: idea, not started.** Nothing here is built, and it may never be. If it goes ahead, it would be planned in detail when stage 1 is close to finished.
 
 ## Goal
 
 Bring the safe space to the phone, to reach people who don't have a PC. For many people with few resources, the phone is their only device with internet.
 
-## What we already know
+## What is thought so far
 
-- The **same Rust core** from stage 1 is reused.
+- The **same Rust core** from stage 1 would be reused.
 - **Android** first, which covers most low-end devices; then **iOS**.
 - The mobile performance budget from [Technology](../07-technology.md) applies: Android 8 or later, 2 GB of RAM and under 15 MB.
-- **End-to-end encrypted sync** between PC and phone arrives: the server only stores encrypted blocks.
+- **End-to-end encrypted sync** between PC and phone would arrive here: the server would only store encrypted blocks.
 - The same features as on PC: no "lite" version.
 
 ## Questions to answer before starting

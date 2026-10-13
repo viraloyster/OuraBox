@@ -2,7 +2,7 @@
 
 OuraBox's technology is not chosen by taste: it follows from the [philosophy](02-philosophy.md). Every decision in this document has to be justifiable by a principle.
 
-Legend: **Decided** means agreed; **Proposed** means recommended but still to be confirmed or measured.
+Legend: **Decided** means agreed; **Proposed** means recommended but still to be confirmed or measured; **In use** means it's how the app works today.
 
 ## The two pillars
 
@@ -17,16 +17,16 @@ Legend: **Decided** means agreed; **Proposed** means recommended but still to be
 |---|---|---|---|
 | T1 | **PC first to validate; Android and iOS later** | Decided | On PC it's easier to build and measure, and deep ideas are worked on with a keyboard. Mobile is the explicit stage 2, because many people with few resources only have a phone. |
 | T2 | **The safe space is an installable app, not a web page** | Decided | Ideas live on the person's device, not on a server. |
-| T3 | **Core in Rust** with all the important logic: encryption, storage and rules | Decided | Rust eliminates memory vulnerabilities by design and is very efficient: little memory, no garbage collector pauses. |
+| T3 | **Core in Rust** with all the important logic: encryption, storage and rules | Decided | Rust rules out most memory-safety bugs by design (outside `unsafe` code) and is very efficient: little memory, no garbage collector pauses. |
 | T4 | **The core is designed for mobile from the start** | Decided | Nothing in the core can assume plenty of memory, a stable connection or a large screen. Moving to mobile should mean changing the interface, not rewriting what matters. |
-| T5 | **Tauri for the PC app** | Proposed | Mature on desktop, lightweight compared to Electron and with a smaller attack surface. It connects directly to the Rust core. |
-| T6 | **Thin interface in TypeScript, no framework** | In use, to be measured | The interface only displays and captures; it holds no sensitive logic. Without a framework it weighs 22 KB. If it grows too much, a lightweight framework (Svelte or SolidJS) will be evaluated. |
+| T5 | **Tauri for the PC app** | In use | Mature on desktop, lightweight compared to Electron and with a smaller attack surface. It connects directly to the Rust core. |
+| T6 | **Thin interface in TypeScript, no framework** | In use, to be measured | The interface only displays and captures; it holds no sensitive logic. Without a framework, today it's about 350 KB uncompressed (HTML, CSS and JS, without fonts). If it grows too much, a lightweight framework (Svelte or SolidJS) will be evaluated. |
 | T7 | **Local-first:** ideas live first on the device, encrypted | Decided | The technical expression of "ideas are private by default". |
-| T8 | **No server in stage 1** | Proposed | On PC with a single device there's no need to sync. Fewer pieces, fewer risks. Sync arrives with mobile. |
+| T8 | **No server in stage 1** | In use | On PC with a single device there's no need to sync. Fewer pieces, fewer risks. Sync arrives with mobile. |
 | T9 | **End-to-end encrypted sync** (stage 2) | Proposed | The server only stores encrypted blocks it cannot read, like Signal or 1Password. |
 | T10 | **AI on the server, only by explicit invitation.** It comes almost last | Proposed | A modest computer can't run a decent local AI; making it local would leave those who have least without AI. Only the chosen idea is sent, with a clear notice. |
 | T11 | **Community and companies, on the web** | Decided | What is shared is, by definition, meant to be seen. |
-| T12 | **Free software under the GNU AGPL-3.0** (that version only) | Decided | Trust is the main asset: anyone can check that the encryption does what it says. Every copy that is distributed or offered over the internet has to stay open, so no one can close OuraBox to charge for it or read ideas. The name and logo are outside the license; protecting them means registering the trademark (pending). The repository stays private until the external security review. |
+| T12 | **Free software under the GNU AGPL-3.0** (that version only) | Decided | Trust is the main asset: anyone can check that the encryption does what it says. Every copy that is distributed or offered over the internet has to stay open, so no one can close OuraBox to charge for it or read ideas. The name and logo are outside the license; protecting them means registering the trademark (pending). The repository is public before the external security review, which is still pending. |
 
 ## Security
 
@@ -40,17 +40,17 @@ Legend: **Decided** means agreed; **Proposed** means recommended but still to be
 
 ### How it's protected (implemented in [`app/src-tauri/src/crypto.rs`](../app/src-tauri/src/crypto.rs))
 
-- **Password → key:** the password is never stored. **Argon2id** turns it into a key, with 64 MiB of memory, 3 passes and a single thread (RFC 9106's recommendation for low-memory machines). It takes about 0.24 s on the development machine; on the minimum machine it still has to be measured. The parameters are stored next to the vault so they can be adjusted without losing access.
+- **Password → key:** the password is never stored. **Argon2id** turns it into a key, with 64 MiB of memory, 3 passes and a single thread. (RFC 9106's option for machines with little memory uses the same memory and passes with 4 lanes; one thread is used here so modest machines aren't overwhelmed.) It takes about 0.24 s on the development machine; on the minimum machine it still has to be measured. The parameters are stored next to the vault so they can be adjusted without losing access.
 - **Master key:** documents are encrypted with a random 256-bit key. On disk it only exists "wrapped" (encrypted) twice: with the password and with the recovery key. Decrypted, it only lives in memory while the space is open, and it's erased on lock.
-- **Encryption:** **XChaCha20-Poly1305**, secure and fast on any processor, even without hardware acceleration. It detects any tampering.
+- **Encryption:** **XChaCha20-Poly1305**, a widely used authenticated cipher that is fast on any processor, even without hardware acceleration. It detects any modification of the encrypted data.
 - **Each file bound to its name:** each document is encrypted with its identifier as associated data. If someone swaps or modifies files, they won't open.
-- **Everything encrypted:** the documents, with their images and drawings, and the index with the titles. Nothing readable is left on disk; the tests verify it.
-- **Audited cryptography:** only libraries from the RustCrypto project (`argon2`, `chacha20poly1305`). No home-made cryptography.
-- **Memory:** passwords and keys are wiped from memory as soon as they're used (`zeroize`).
+- **Everything encrypted:** the documents, with their images and drawings, the projects, and the index with the titles. Nothing readable from the ideas is left on disk; the tests verify it. (Preferences and positions are not encrypted: see below.)
+- **Established cryptography:** only libraries from the RustCrypto project (`argon2`, `chacha20poly1305`). No home-made cryptography.
+- **Memory:** in the core, passwords and keys are wiped from memory once they're no longer needed (`zeroize`). The password also passes through the interface (the web engine), where memory can't be wiped reliably.
 - **Changing the password** always asks for the current one, even if the space is open. Documents are not re-encrypted: only the master key's wrapping changes, and the recovery key stays valid.
 - **Auto-lock:** after 5, 15, 30 or 60 minutes of inactivity, or never. By default, 15 minutes. Locking (by hand, with Ctrl+L or on its own) forgets the key like signing out; the door only remembers, in memory, who locked, to ask just for their password.
 - **Deleting a user** asks for their password and a confirmation, and removes their whole space from the computer. Encrypted backups already made are not touched.
-- **External review:** before real people store ideas, someone with security experience reviews the core. **Pending.**
+- **External review:** before other people store real ideas, someone with security experience reviews the core. **Pending.**
 
 ### If you lose your password
 
@@ -66,7 +66,8 @@ In Security you can create a new recovery key (it asks for the current password)
 - **Exporting takes the content out unencrypted** (PDF, image, text). It only happens when the person asks, through the system dialog and wherever they choose; OuraBox exports nothing on its own.
 - **Auto-lock depends on the app being open:** it locks after the inactivity time the person chooses (15 minutes by default), also counting the time the computer was suspended. If "Never" is chosen, the space stays open until it's locked by hand or the app is closed.
 - **Documents from the first version** are encrypted and deleted when the password is created, but deleting a file doesn't guarantee its data disappears from the physical disk. The same goes for deleting a user, although what stays there was encrypted.
-- **Preferences** (chosen sky and stroke smoothing) are stored unencrypted. They contain nothing from the ideas.
+- **Preferences and positions** (sky, language, typeface, pen settings, which documents were open and where each one was left) are stored unencrypted. They are ids and numbers, nothing from the ideas, although they reveal how many documents were visited (see [Architecture](12-architecture.md#inside-each-space)).
+- **It doesn't protect against** someone using the computer while the space is open, or malware on the computer (a keylogger could capture the password).
 
 ## Optimization
 
@@ -94,8 +95,8 @@ In Security you can create a new recovery key (it asks for the current password)
 
 ### How it's met
 
-- **Real modest test machines** are bought or obtained (an old PC and, in stage 2, a low-end Android phone).
-- Performance is **measured**, not assumed. If a version makes the budget worse, it isn't released.
+- **Real modest test machines** are to be bought or obtained (an old PC and, if stage 2 happens, a low-end Android phone).
+- Performance is **measured**, not assumed. The aim is that a version that makes the budget worse isn't released. Today memory is over budget (see the [measurements](../app/README.md#initial-measurements)).
 
 ## Technical open items
 
@@ -103,4 +104,4 @@ In Security you can create a new recovery key (it asks for the current password)
 - **Mobile interface:** Tauri mobile or native Kotlin. Decided in stage 2, measuring on a cheap Android phone.
 - **AI provider:** which one, with what no-retention and no-training policy, and how it's funded without charging users (see [Economic model](11-economic-model.md)).
 - **Visual effects:** which ones fit the performance budget (see [Design](10-design.md)).
-- **Rust experience of whoever builds it:** sets the pace and how much external review will be needed.
+- **External review of the core:** how much is needed, and who does it.

@@ -11,7 +11,7 @@ Legend: **Decided** means agreed; **Option** means considered but not decided; *
 ## Options
 
 - **Donations**, as a possible way to start.
-- **A commission from companies**, in the future (stage 4). Never from users.
+- **A commission from companies**, if the companies space (stage 4) is ever built. Never from users.
 
 ## Why it's viable in stage 1
 
@@ -19,7 +19,7 @@ In stage 1 everything lives on each person's PC and there's no server (see [Tech
 
 The costs appear later:
 
-- **Sync** between devices (stage 2): it requires a server.
+- **Sync** between devices (stage 2, if it happens): it requires a server.
 - **AI:** each use has a cost.
 
 ## A precedent

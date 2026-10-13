@@ -11,17 +11,28 @@ The world is cruel and people are born naive. OuraBox is the portal that carries
 
 It's for people with ideas and callings outside their official lane: the lawyer who always wanted to be an architect, the programmer who always wanted to be a musician, the talent with few resources that nobody sees.
 
-OuraBox doesn't inflate egos or put anyone in the box. It is cold but warm: it shows the assumptions that limit each idea and hands the question back to the person who thinks differently. It is minimalist and calm, and it doesn't charge its users.
+OuraBox doesn't inflate egos or put anyone in the box. It is cold but warm: it helps you see the assumptions that limit each idea and hands the question back to the person who thinks differently. It is minimalist and calm, and it doesn't charge its users.
 
-## The three spaces
+## What exists today
 
-1. **Safe space:** your ideas, private by default. *(being defined)*
-2. **Community:** people working on their ideas. *(to be defined)*
-3. **Companies:** open doors for talent, and what keeps OuraBox going. *(to be defined)*
+- **A desktop app in beta**, in [`app/`](app/) (version 0.1.0): projects, files and quick notes; writing, drawing and images on the same page; a place in each idea to write down its assumptions. [What it does](app/README.md#what-it-does-today).
+- **Windows** is the system it's built and tried on. An installer is built automatically on each change (the repository's Actions tab, under Artifacts); it isn't signed and doesn't update itself. Linux and macOS aren't tried yet: Tauri builds for them, but nobody has checked OuraBox there.
+- **Everything stays on your computer, encrypted with your password.** There is no server, no online account and no sync between devices.
+- **Not there:** no mobile app, no AI, no community and no companies. Those are ideas for later, described below, and may never be built.
 
-## Status: beta
+[What beta means](docs/08-plan.md#what-beta-means).
 
-OuraBox is under construction. The desktop app, in [`app/`](app/), is in **beta**: you can use it every day to write, draw and add images, and everything is saved encrypted with your password. But it isn't finished yet. [What beta means](docs/08-plan.md#what-beta-means).
+## Security, in short
+
+Documents, drawings, images and titles are encrypted on disk (Argon2id and XChaCha20-Poly1305, with established libraries). That protects them from someone who gets the files or an encrypted backup without the password. It doesn't protect them from someone using the computer while the space is open, or from malware on the computer. Exports (PDF, image, text) leave unencrypted. **The encryption has not had an external review yet.** Details: [Technology](docs/07-technology.md#security) and [Security](SECURITY.md).
+
+## The vision: three spaces
+
+Only the first one exists, as the desktop app above. The other two are ideas, not plans with dates.
+
+1. **Safe space:** your ideas, private by default. *(desktop app in beta)*
+2. **Community:** people working on their ideas. *(idea, not built)*
+3. **Companies:** open doors for talent, and perhaps what would keep OuraBox going. *(idea, not built)*
 
 **[Read the documentation](docs/README.md)**
 

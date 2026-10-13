@@ -12,7 +12,7 @@ Useful to include:
 - The steps to reproduce it, and the version or commit.
 - What they would need first (the computer unlocked, a copy of the data folder, a backup file…).
 
-You'll get an answer within a week. Once it's fixed, the report is made public with credit to you, unless you'd rather stay anonymous.
+The aim is to answer within a week. Once it's fixed, the report is made public with credit to you, unless you'd rather stay anonymous.
 
 ## What is in scope
 
@@ -21,7 +21,7 @@ You'll get an answer within a week. Once it's fixed, the report is made public w
 - Anything that lets content in a document run code in the app (HTML sanitizing, the content security policy).
 - Anything that leaves decrypted ideas on disk or on screen after locking.
 
-How it is designed, and what it does and doesn't protect against, is in [The safe space](docs/09-safe-space.md) and [Architecture](docs/12-architecture.md).
+How it is designed, and what it does and doesn't protect against, is in [Technology](docs/07-technology.md#security) and [Architecture](docs/12-architecture.md).
 
 ## Versions
 

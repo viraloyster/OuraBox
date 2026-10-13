@@ -50,4 +50,4 @@ It is a portal from abstract ideas to the world of execution, whatever the field
 
 ## How far it wants to go
 
-OuraBox has three spaces (see [The three spaces](04-spaces.md)): the safe space, the community and companies. When it grows enough, the ambition is to open **remote worldwide events** on the platform, where talent from anywhere in the world can show itself.
+OuraBox is imagined in three spaces (see [The three spaces](04-spaces.md)): the safe space, the community and companies. Today only the first exists, as a desktop app in beta. If it ever grows enough, the ambition is to open **remote worldwide events**, where talent from anywhere in the world can show itself.

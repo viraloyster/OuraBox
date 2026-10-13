@@ -1,12 +1,12 @@
 # The three spaces
 
-OuraBox is divided into three spaces. Each one has a different purpose, and the order matters.
+OuraBox is imagined in three spaces. Each one has a different purpose, and the order matters. Only the first one exists today; the other two are ideas, not built and possibly never built.
 
 | # | Space | Purpose | Status |
 |---|---|---|---|
-| 1 | **Safe space** | Each person's private place for their ideas | Being defined (stage 1, PC) |
-| 2 | **Community** | People working on their ideas, together | TODO (stage 3) |
-| 3 | **Companies** | Open doors for talent, and monetization | TODO (stage 4) |
+| 1 | **Safe space** | Each person's private place for their ideas | Desktop app in beta (stage 1, PC) |
+| 2 | **Community** | People working on their ideas, together | Idea, not started (stage 3) |
+| 3 | **Companies** | Open doors for talent, and monetization | Idea, not started (stage 4) |
 
 ---
 
@@ -18,8 +18,8 @@ Each person's workspace. It is private by default.
 
 - It is **a space for ideas**, of every kind and from any field, with code or without it.
 - It has a section for **quick notes** and another for **deep ideas**.
-- It is the whole software, not just the AI. The AI is one part of the space, not the whole space, and it comes **almost at the end**: first, the everyday experience.
-- When the AI takes part, it speaks with the [voice of OuraBox](03-voice.md): cold but warm, showing the box and handing the question back.
+- It is the whole software, not just the AI. An AI would be one part of the space, not the whole space, and it comes **almost at the end**: first, the everyday experience. There is no AI in the app today.
+- If an AI takes part, it speaks with the [voice of OuraBox](03-voice.md): cold but warm, showing the box and handing the question back.
 - It has to be psychologically healthy: give hope, not overwhelm.
 
 The details are in [The safe space](09-safe-space.md), and how it looks and feels, in [Design](10-design.md).
@@ -53,7 +53,7 @@ Where the talent working in OuraBox finds open doors, and where OuraBox sustains
 
 ## Later on: remote worldwide events
 
-When the platform grows enough, the ambition is to open remote worldwide events where talent from anywhere in the world can show itself.
+If the platform ever grows enough, the ambition is to open remote worldwide events where talent from anywhere in the world can show itself.
 
 ---
 

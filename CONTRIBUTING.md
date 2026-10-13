@@ -21,7 +21,7 @@ npm run dev            # only the interface, in the browser, with an in-memory c
 
 ## Before opening a pull request
 
-The same checks run on every push (`.github/workflows/checks.yml`):
+The same checks run on every push to `main` and on every pull request that touches `app/` (`.github/workflows/checks.yml`):
 
 ```bash
 cd app

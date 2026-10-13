@@ -6,7 +6,7 @@ OuraBox's safe space for PC (stage 1 of the [plan](../docs/08-plan.md)).
 
 ## What it does today
 
-- **Users:** one computer can have several users. Each one signs in with a **username and password** to their own encrypted space; nobody sees anyone else's space, or which users exist (the name isn't written to disk). Another user is added from the sign-in screen ("Add another user") or from Settings. In Security, "Delete this user…" deletes the signed-in user and everything in their space on this computer, after their password and a confirmation; encrypted backups already made are not touched. Someone who already used OuraBox gives their space a username the first time, with their usual password, and everything stays as it was.
+- **Users:** one computer can have several users. Each one signs in with a **username and password** to their own encrypted space; nobody sees anyone else's space, or the users' names (names aren't written to disk). Another user is added from the sign-in screen ("Add another user") or from Settings. In Security, "Delete this user…" deletes the signed-in user and everything in their space on this computer, after their password and a confirmation; encrypted backups already made are not touched. Someone who already used OuraBox gives their space a username the first time, with their usual password, and everything stays as it was.
 - **Everything encrypted:** the first time the app opens, a user is created with their password. Documents, their drawings, their images and the list of titles are saved encrypted; without the password nothing can be read. You can **lock** at any time (the padlock above the gear, "Lock" in Settings, or Ctrl+L): like a computer's lock screen, the door then shows your name and asks only for your password, with "Sign in as someone else" next to it. The name is kept only in the window's memory. **Sign out** (in Settings) forgets it and shows the usual door.
 - **Recovery key:** shown only once, when the password is created. It lets you get in and choose a new password if you forget the old one. It can be copied and, **optionally**, saved in your own email: OuraBox opens the email program with a message to yourself, without sending or storing anything. In Security you can create a new key (the old one stops working).
 - **Encrypted backup** (in Security): an `.ourabox` file with the whole space, encrypted, saved wherever you like (a USB stick, Google Drive). Without the password it is unreadable: you can't even see the names or how many documents there are. On another computer it is opened when creating a user ("Used OuraBox before? Open a backup"), with the password that was in place when the backup was made or with the recovery key.
@@ -23,7 +23,7 @@ OuraBox's safe space for PC (stage 1 of the [plan](../docs/08-plan.md)).
 - **Deep zoom,** from 10% to 10,000%: with the buttons at the bottom right, Ctrl + mouse wheel (or pinching on the touchpad) or Ctrl+= / Ctrl+- / Ctrl+0. With a lot of zoom you can draw and write tiny details inside the same page: the pen width and the font of the boxes are measured on screen, so what you do while zoomed in stays small on the page. Each document remembers its zoom.
 - **Free text boxes:** besides inline text, you can write anywhere on the page: double-click an empty spot or use the text box tool. Boxes move with their handle and widen from the right edge; an empty box disappears by itself.
 - **Blank documents** where you can write, draw or paint freely on the same page, and add images.
-- **Up to four pages at once:** drag a document from the list onto the open page and it opens beside it. With two or three, they sit in columns; with four, in a two-by-two grid. **Write or Draw applies to all of them:** you draw from one to another without changing the mode in each. The dividers can be dragged; double-click evens them out.
+- **Up to four documents at once:** drag a document from the list onto the open page and it opens beside it. With two or three, they sit in columns; with four, in a two-by-two grid. **Write or Draw applies to all of them:** you draw from one to another without changing the mode in each. The dividers can be dragged; double-click evens them out.
 - **About this idea** (the small light bulb above each page, outside it so it doesn't cover anything; closed by default): what I want to achieve, a single next step (it appears above the page), the box ("What are you taking for granted?"), the attempts and the history ("See how it grew").
 - **Ideas that come back:** at most once a day, an idea that has been still for a while appears gently: pick it up again, let it rest or let it go.
 - **Letting go is not deleting:** ideas you let go wait, collapsed, at the end of the list.
@@ -67,9 +67,11 @@ OuraBox's safe space for PC (stage 1 of the [plan](../docs/08-plan.md)).
 ## What it does NOT do yet
 
 - **The external security review is missing**, which the plan requires before other people store real ideas.
+- No sync between devices and no mobile app: everything lives on one computer (moving it means an encrypted backup).
+- Exporting the whole space to readable formats, and deleting everything at once, are still missing (each document can be exported, and the encrypted backup covers everything).
 - Images sit in the text flow; they can't be moved freely around the page yet (text boxes can).
 - There is no customizable profile (optional feature, for later).
-- There is no AI (it comes almost at the end; first, the everyday experience).
+- There is no AI (if it comes, it comes almost at the end; first, the everyday experience).
 
 ## How it's built
 
@@ -77,6 +79,7 @@ OuraBox's safe space for PC (stage 1 of the [plan](../docs/08-plan.md)).
 |---|---|---|
 | Encryption | `src-tauri/src/crypto.rs` | Argon2id to turn the password into a key and XChaCha20-Poly1305 to encrypt. See [Technology](../docs/07-technology.md#security). |
 | Backups | `src-tauri/src/documents/copy.rs` | The encrypted backups: writing them in sealed chunks and opening them by checking everything before touching the space. |
+| Users | `src-tauri/src/users.rs` | One encrypted space per user, found by a fingerprint of the username; names aren't stored. |
 | Rust core | `src-tauri/src/documents.rs` | The vault (create, unlock, lock and recover), the documents and the encrypted projects. It writes atomically and only accepts its own identifiers, so nothing can read or write outside its folder. It encrypts the documents that the first version saved unencrypted. |
 | Sign-in screen | `src/lock.ts` | The screens to create a user, sign in, unlock after a lock and recover access. |
 | Security | `src/security.ts` | Auto-lock after inactivity, password change and deleting the user. |
@@ -104,7 +107,7 @@ The app also limits what the window can do: a content security policy (CSP) that
 ## Requirements
 
 - [Rust](https://www.rust-lang.org/tools/install) (stable)
-- [Node.js](https://nodejs.org/) 20 or later
+- [Node.js](https://nodejs.org/) 22 (the version the checks use)
 - Tauri's system dependencies for your operating system: <https://tauri.app/start/prerequisites/>
 
 ## Usage
@@ -133,7 +136,7 @@ Measured on Linux, on a virtual display without graphics acceleration:
 |---|---|---|
 | Executable, first version | 3.7 MB | Installer under 15 MB |
 | Executable, with backups and email | 5.2 MB (the file dialog and the link opener add ~1.5 MB on Linux) | Installer under 15 MB |
-| Interface (HTML, CSS and JS) | ~46 KB uncompressed, plus 133 KB of fonts | — |
+| Interface (HTML, CSS and JS), version 0.1.0 | ~350 KB uncompressed (~95 KB compressed), plus ~20 KB per language and 198 KB of fonts | — |
 | Memory, first version | ~165 MB the main process and ~380 MB the web engine | Under 150 MB |
 | Memory, with skies and glass | ~150 MB the main process and ~510 MB the web engine | Under 150 MB |
 
