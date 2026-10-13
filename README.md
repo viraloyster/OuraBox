@@ -44,7 +44,7 @@ OuraBox doesn't inflate egos or put anyone in the box. It is cold but warm: it h
 ## What exists today
 
 - **A desktop app in beta**, in [`app/`](app/) (version 0.1.0): projects, files and quick notes; writing, drawing and images on the same page; a place in each idea to write down its assumptions. [What it does](app/README.md#what-it-does-today).
-- **Windows** is the system it's built and tried on. An installer is built automatically on each change (the repository's Actions tab, under Artifacts); it isn't signed and doesn't update itself. Linux and macOS aren't tried yet: Tauri builds for them, but nobody has checked OuraBox there.
+- **Windows** is the system it's built and tried on. **[Download the installer](https://github.com/viraloyster/OuraBox/releases/latest)** from Releases; it isn't signed yet and doesn't update itself. What changed in each version is in the [changelog](CHANGELOG.md). Linux and macOS aren't tried yet: Tauri builds for them, but nobody has checked OuraBox there.
 - **Everything stays on your computer, encrypted with your password.** There is no server, no online account and no sync between devices.
 - **Not there:** no mobile app, no AI, no community and no companies. Those are ideas for later, described below, and may never be built.
 
@@ -56,7 +56,7 @@ Documents, drawings, images and titles are encrypted on disk (Argon2id and XChaC
 
 ## The vision: three spaces
 
-Only the first one exists, as the desktop app above. The other two are ideas, not plans with dates.
+Only the first one exists, as the desktop app above. The other two are ideas, not plans with dates. The [plan](docs/08-plan.md) lays the road out in stages: the safe space on PC (now), then on mobile, a community, companies, and one day remote events open to the whole world.
 
 1. **Safe space:** your ideas, private by default. *(desktop app in beta)*
 2. **Community:** people working on their ideas. *(idea, not built)*

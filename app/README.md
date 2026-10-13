@@ -128,6 +128,8 @@ npm run e2e                     # end-to-end tests in a browser (Playwright)
 cd src-tauri && cargo test      # core tests
 ```
 
+**Publishing a version:** raise the version in `package.json`, `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml`, add its section to [CHANGELOG.md](../CHANGELOG.md), and push a tag like `v0.2.0`. The Release workflow (`.github/workflows/release.yml`) runs the tests, builds the Windows installer and publishes it on [Releases](https://github.com/viraloyster/OuraBox/releases) with its checksum.
+
 `npm run dev` opens only the interface in the browser, to work on the design. In that mode documents live in the tab's memory and are lost on reload: it's not the real app.
 
 ## Initial measurements

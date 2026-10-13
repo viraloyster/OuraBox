@@ -1,6 +1,6 @@
-# Builds the OuraBox installer for Windows on a GitHub server.
-# The installer can be downloaded from each run's page
-# (the repository's "Actions" tab), under "Artifacts".
+# Builds the OuraBox installer for Windows on every change, to catch
+# what breaks it early. Each run keeps it under "Artifacts"; the
+# installers people download come from release.yml.
 name: Windows app
 
 on:
