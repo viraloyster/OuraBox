@@ -347,6 +347,16 @@ function listItem(summary: DocumentSummary, depth: number, children = 0): HTMLLI
   icon.className = "doc-icon";
   icon.innerHTML = summary.kind === "note" ? ICONS.note : ICONS.file;
   open.append(icon, title);
+  if (isOpen(summary.id) && summary.id !== ws.active?.document?.id) {
+    // A real element, not a drawn dot, so it can say what it means: to a
+    // screen reader, and in a tooltip to whoever rests the mouse on it.
+    const dot = document.createElement("span");
+    dot.className = "open-dot";
+    dot.setAttribute("role", "img");
+    dot.setAttribute("aria-label", t("main.doc.openElsewhere"));
+    dot.title = t("main.doc.openElsewhere");
+    open.append(dot);
+  }
   if (date.textContent || date.childElementCount) open.append(date);
   open.title = formatDate(summary.kind === "note" ? summary.createdAt : summary.updatedAt);
   open.addEventListener("click", () => void openIn(ws.active, summary.id));
@@ -403,6 +413,8 @@ function listItem(summary: DocumentSummary, depth: number, children = 0): HTMLLI
     });
   }
   item.append(open, actions);
+  // How many actions show on hover: the title leaves them room (see documents.css).
+  item.style.setProperty("--actions", String(actions.childElementCount));
   // If the list was redrawn while renaming (because of a save), the name stays half typed.
   if (renaming?.id === summary.id) startRename(item, summary);
   return item;

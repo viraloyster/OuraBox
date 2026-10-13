@@ -220,6 +220,11 @@ pub struct TextBox {
     pub width: f64,
     pub scale: f64,
     pub html: String,
+    /// The width follows the text until the person widens the box by hand
+    /// (`width` still holds the last one). Boxes saved before it existed
+    /// don't have it and keep their width.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub fit: bool,
 }
 
 /// The colors notes can be marked with: the palette's, which adapt to each
@@ -2430,6 +2435,7 @@ pub(crate) mod tests {
             width: 3.2,
             scale: 0.01,
             html: "<p>A tiny detail</p>".into(),
+            fit: true,
         }];
         store.save(document.clone()).unwrap();
         let loaded = store.load(&document.id).unwrap();
@@ -2442,6 +2448,14 @@ pub(crate) mod tests {
         let mut bad = loaded.clone();
         bad.boxes[0].id = "../x".into();
         assert_eq!(code(store.save(bad)), ErrorCode::InvalidInput);
+
+        // A box saved before `fit` existed keeps its width, and a box with a
+        // fixed width is written exactly as before.
+        let old: TextBox =
+            serde_json::from_str(r#"{"id":"b2","x":1,"y":2,"width":300,"scale":1,"html":""}"#)
+                .unwrap();
+        assert!(!old.fit);
+        assert!(!serde_json::to_string(&old).unwrap().contains("fit"));
     }
 
     #[test]

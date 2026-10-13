@@ -3,8 +3,10 @@
 // size of its letters (`scale`): a box created at high zoom ends up tiny on
 // the page, so one file can hold details at any scale.
 //
-// Boxes move by their grip (top left) and widen from their right edge. A box
-// that is left empty disappears.
+// Boxes move by their grip (top left) and widen from their right edge. A new
+// box is as wide as what is written in it, up to a limit where it starts to
+// wrap, so a short note stays on one line; once widened by hand, it keeps the
+// width it was given. A box that is left empty disappears.
 //
 // The text of a box is always laid out at normal size and then the whole box
 // is shrunk with `scale`: the browser can't lay out letters at fractions of a
@@ -14,8 +16,10 @@ import { t } from "./i18n";
 import { sanitizeHtml } from "./sanitize";
 import type { TextBox } from "./storage";
 
-/** Width of a new box, in screen pixels. */
+/** Width of a new box, in screen pixels, before its text decides it. */
 const NEW_WIDTH = 300;
+/** How wide a box that follows its text can grow before it wraps, in screen pixels. */
+const FIT_MAX_WIDTH = 420;
 /** Minimum width of a box, in font sizes. */
 const MIN_WIDTH_EM = 3;
 
@@ -38,15 +42,18 @@ export class TextBoxes {
     return [...this.container.querySelectorAll<HTMLElement>(".text-box")]
       .map((element) => {
         const text = element.querySelector<HTMLElement>(".box-text")!;
-        return {
+        const fit = element.classList.contains("fit");
+        const box: TextBox & { empty?: boolean } = {
           id: element.dataset.id!,
           x: round(parseFloat(element.style.left)),
           y: round(parseFloat(element.style.top)),
-          width: round(parseFloat(element.style.width) * Number(element.dataset.scale)),
+          width: round(this.ownWidth(element) * Number(element.dataset.scale)),
           scale: Number(element.dataset.scale),
           html: text.innerHTML,
           empty: !text.textContent?.trim(),
         };
+        if (fit) box.fit = true;
+        return box;
       })
       .filter((box) => !box.empty)
       .map(({ empty: _, ...box }) => box);
@@ -56,7 +63,7 @@ export class TextBoxes {
   create(x: number, y: number): void {
     const zoom = this.zoom();
     const scale = Math.min(100, Math.max(0.0001, round(1 / zoom)));
-    const box: TextBox = { id: newId(), x: round(x), y: round(y), width: round(NEW_WIDTH * scale), scale, html: "" };
+    const box: TextBox = { id: newId(), x: round(x), y: round(y), width: round(NEW_WIDTH * scale), scale, html: "", fit: true };
     const element = this.element(box);
     this.container.appendChild(element);
     const text = element.querySelector<HTMLElement>(".box-text")!;
@@ -85,7 +92,13 @@ export class TextBoxes {
     element.style.left = `${box.x}px`;
     element.style.top = `${box.y}px`;
     // The width is saved in page units; inside the box it is measured at normal size.
-    element.style.width = `${box.width / box.scale}px`;
+    element.dataset.width = String(box.width / box.scale);
+    if (box.fit) {
+      element.classList.add("fit");
+      element.style.maxWidth = `${FIT_MAX_WIDTH}px`;
+    } else {
+      element.style.width = `${box.width / box.scale}px`;
+    }
     element.style.setProperty("--s", String(box.scale));
     element.style.scale = String(box.scale);
 
@@ -121,10 +134,24 @@ export class TextBoxes {
       element.style.top = `${round(start.top + dy)}px`;
     }, element);
     this.drag(resize, (dx, _dy, start) => {
-      // `dx` is in page units; the box width is at its own size.
+      // `dx` is in page units; the box width is at its own size. Widened by
+      // hand, it stops following its text.
+      element.classList.remove("fit");
+      element.style.maxWidth = "";
       element.style.width = `${round(Math.max(MIN_WIDTH_EM * 17, start.width + dx / box.scale))}px`;
     }, element);
     return element;
+  }
+
+  /** The box width at its own size (before `scale`). One that follows its
+   *  text is measured, with a pixel to spare so the export, which lays the
+   *  text out again, doesn't break its last word onto a new line; hidden (a
+   *  pane not in view), it keeps the last width it had. */
+  private ownWidth(element: HTMLElement): number {
+    if (!element.classList.contains("fit")) return parseFloat(element.style.width);
+    const measured = element.offsetWidth;
+    if (measured > 0) element.dataset.width = String(measured + 1);
+    return Number(element.dataset.width);
   }
 
   /** Dragging a part of the box; movements are converted to the page's scale. */
@@ -144,7 +171,7 @@ export class TextBoxes {
         y: e.clientY,
         left: parseFloat(element.style.left),
         top: parseFloat(element.style.top),
-        width: parseFloat(element.style.width),
+        width: this.ownWidth(element),
       };
       element.classList.add("moving");
       const onMove = (event: PointerEvent) => move((event.clientX - start.x) / zoom, (event.clientY - start.y) / zoom, start);

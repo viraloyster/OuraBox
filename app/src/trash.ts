@@ -153,6 +153,8 @@ export function renderTrash(): void {
     button(ICONS.recover, t("common.restore"), () => void restore());
     button(ICONS.remove, t("common.deleteForever"), () => forever(item), true);
     item.append(open, actions);
+    // The title leaves room for the actions on hover (see documents.css).
+    item.style.setProperty("--actions", String(actions.childElementCount));
     return item;
   };
   for (const project of trashedProjects) {

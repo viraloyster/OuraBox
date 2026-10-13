@@ -515,7 +515,10 @@ export class Pane {
   renderNextStep(): void {
     const text = this.previewing ? "" : (this.document?.nextStep ?? "");
     this.nextStep.hidden = !text;
-    this.nextStep.querySelector(".next-text")!.textContent = text;
+    const line = this.nextStep.querySelector<HTMLElement>(".next-text")!;
+    line.textContent = text;
+    // The band cuts a long step with an ellipsis; resting the mouse on it shows it whole.
+    line.title = text;
   }
 
   /** Marking the step as done sends it off calmly and lets you choose the next one. */

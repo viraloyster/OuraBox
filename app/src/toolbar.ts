@@ -4,7 +4,7 @@
 
 import { t } from "./i18n";
 import { exportImage, exportText, printPage } from "./export";
-import { type Align, currentAlign, insertLine, insertTable, setAlign, setInline, toggleChecklist } from "./format";
+import { type Align, currentAlign, insertLine, insertTable, setAlign, setInline, toggleChecklist, toggleList } from "./format";
 import { imageFiles, type Mode } from "./pane";
 import { BASIC_COLORS, colorLabel } from "./colors";
 import { closePanels } from "./hints";
@@ -102,7 +102,8 @@ export function setupToolbar(): void {
         document.execCommand("formatBlock", false, `<${block}>`);
         closePanels();
         renderStyle();
-      } else if (button.dataset.command) document.execCommand(button.dataset.command);
+      } else if (button.dataset.command === "insertUnorderedList") toggleList(ws.active.editorElement, "insertUnorderedList");
+      else if (button.dataset.command) document.execCommand(button.dataset.command);
       ws.active.scheduleSave();
     });
   }
@@ -154,7 +155,7 @@ function setupFormat(): void {
     run(button, (editor) => setInline(editor, "data-color", button.dataset.textColor || null));
   }
   const inserts: Record<string, (editor: HTMLElement) => void> = {
-    ordered: () => document.execCommand("insertOrderedList"),
+    ordered: (editor) => toggleList(editor, "insertOrderedList"),
     tasks: (editor) => toggleChecklist(editor),
     table: () => insertTable(),
     line: () => insertLine(),

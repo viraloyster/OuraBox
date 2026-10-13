@@ -103,6 +103,10 @@ export interface TextBox {
   width: number;
   scale: number;
   html: string;
+  /** The width follows the text (up to a limit) until the person widens the
+   *  box by hand. `width` still holds the last width it had, so a box always
+   *  has one. Absent in boxes saved before it existed: those keep their width. */
+  fit?: boolean;
 }
 
 /** The colors notes are marked with: the palette's, which follow the sky. */

@@ -58,6 +58,7 @@ export default {
     rootsOf: "Raízes de {name}",
     move: "Mover para outro projeto",
     release: "Soltar (não é apagada)",
+    openElsewhere: "Aberto em outro painel",
   },
   rename: {
     placeholder: "Vazio: o título vem da primeira linha",

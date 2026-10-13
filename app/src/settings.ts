@@ -42,6 +42,14 @@ export function openSettings(next: Tab = tab): void {
   // While it is open, what is behind it gets neither focus nor clicks.
   $("app").inert = true;
   $("settings").querySelector<HTMLElement>(`[data-tab="${next}"]`)?.focus();
+  if (next === "sky") showChosenSky();
+}
+
+/** On a short window the chosen sky can be below the fold: it is brought
+ *  into view, without moving anything that is already visible. */
+function showChosenSky(): void {
+  if ($("settings").hidden) return;
+  $("sky-grid").querySelector<HTMLElement>('[aria-checked="true"]')?.scrollIntoView({ block: "nearest" });
 }
 
 export function closeSettings(): void {
@@ -66,6 +74,9 @@ function showTab(next: Tab): void {
   for (const section of document.querySelectorAll<HTMLElement>("#settings [data-section]")) {
     section.hidden = section.dataset.section !== next;
   }
-  if (next === "sky") renderPicker();
+  if (next === "sky") {
+    renderPicker();
+    showChosenSky();
+  }
   if (next === "security") renderSecurity();
 }

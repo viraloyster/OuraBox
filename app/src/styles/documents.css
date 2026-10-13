@@ -187,6 +187,16 @@
   opacity: 1;
 }
 
+/* While the actions show, the row keeps their room free (each one is 28 px
+   plus a 2 px gap, 6 px from the edge), so a long title ends in an ellipsis
+   before them instead of running underneath. Only the padding grows: the
+   whole row stays clickable and draggable. */
+.doc-item:is(:hover, :has(.doc-actions:focus-within)) .doc-open,
+.project-item:is(:hover, :has(.doc-actions:focus-within)) .project-toggle,
+.switch-row:is(:hover, :has(.doc-actions:focus-within)) .switch-open {
+  padding-right: calc(var(--actions, 0) * 30px + 10px);
+}
+
 .doc-action {
   display: grid;
   place-items: center;
@@ -210,17 +220,21 @@
   color: var(--danger);
 }
 
-/* A document open in the other pane is marked with a discreet dot. */
-.doc-item.open:not(.active) .doc-title::after {
-  content: "";
-  display: inline-block;
+/* A document open in the other pane is marked with a discreet dot. It sits
+   after the title, not inside it, so a long title's ellipsis never hides it. */
+.open-dot {
+  flex: none;
   width: 6px;
   height: 6px;
-  margin-left: 8px;
+  margin: 0 auto 0 1px;
   border-radius: 50%;
   background: var(--accent);
   opacity: 0.6;
-  vertical-align: middle;
+}
+
+/* The title then only takes what it needs, so the dot follows its last word. */
+.doc-title:has(+ .open-dot) {
+  flex: 0 1 auto;
 }
 
 .doc-confirm {

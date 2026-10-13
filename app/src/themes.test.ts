@@ -55,6 +55,20 @@ describe("inkColor", () => {
   it("keeps any other color as it is", () => {
     expect(inkColor("#123456", day)).toBe("#123456");
   });
+
+  it("paints black with the sky's ink on a dark sky, and only there", () => {
+    for (const black of ["#000000", "#000", "#1a1a1a", "#202124"]) {
+      expect(inkColor(black, night)).toBe(night.text);
+      expect(inkColor(black, day)).toBe(black);
+    }
+    // Dark colors with a hue are a choice, and gray is visible enough.
+    expect(inkColor("#03256c", night)).toBe("#03256c");
+    expect(inkColor("#8a8f98", night)).toBe("#8a8f98");
+  });
+
+  it("keeps black on paper, where exports are drawn", () => {
+    expect(inkColor("#000000", resolveSky("despejado", false))).toBe("#000000");
+  });
 });
 
 describe("sky names", () => {

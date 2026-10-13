@@ -20,7 +20,7 @@ export class IdeaPanel {
   onToggle: (open: boolean) => void = () => {};
 
   private purpose: HTMLTextAreaElement;
-  private next: HTMLInputElement;
+  private next: HTMLTextAreaElement;
   private assumptions: HTMLUListElement;
   private newAssumption: HTMLInputElement;
   private attempts: HTMLElement;
@@ -45,7 +45,7 @@ export class IdeaPanel {
       </label>
       <label class="idea-section">
         <span class="idea-label">${t("idea.next")}</span>
-        <input class="idea-next" type="text" placeholder="${t("idea.nextPlaceholder")}" />
+        <textarea class="idea-next" rows="1" placeholder="${t("idea.nextPlaceholder")}"></textarea>
       </label>
       <section class="idea-section">
         <span class="idea-label">${t("idea.assumptions")}</span>
@@ -64,7 +64,16 @@ export class IdeaPanel {
 
     this.root.querySelector(".idea-close")!.addEventListener("click", () => this.close());
     this.purpose.addEventListener("input", () => this.update((d) => (d.purpose = this.purpose.value)));
+    // The next step is a single line of thought, but a long one must be read
+    // whole: the field grows with it instead of hiding the end. Enter does not
+    // start a second line (there is only one step), and a pasted line break
+    // becomes a space.
+    this.next.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") e.preventDefault();
+    });
     this.next.addEventListener("input", () => {
+      if (/[\r\n]/.test(this.next.value)) this.next.value = this.next.value.replace(/\s*[\r\n]+\s*/g, " ");
+      this.fitNext();
       this.update((d) => (d.nextStep = this.next.value.trim()));
       this.pane.renderNextStep();
     });
@@ -112,9 +121,16 @@ export class IdeaPanel {
     if (this.root.hidden) return;
     if (this.purpose.value !== document.purpose) this.purpose.value = document.purpose;
     if (this.next.value.trim() !== document.nextStep) this.next.value = document.nextStep;
+    this.fitNext();
     this.renderAssumptions();
     this.renderAttempts();
     this.renderHistoryEntry();
+  }
+
+  /** As tall as its text: measured from nothing each time, so it also shrinks. */
+  private fitNext(): void {
+    this.next.style.height = "auto";
+    this.next.style.height = `${this.next.scrollHeight + this.next.offsetHeight - this.next.clientHeight}px`;
   }
 
   private update(change: (document: NonNullable<Pane["document"]>) => void): void {

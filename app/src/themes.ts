@@ -267,6 +267,23 @@ export function applySky(sky: Sky, root: HTMLElement = document.documentElement)
 export function inkColor(color: string, sky: Sky): string {
   const name: string = LEGACY_INK[color.toLowerCase()] ?? color;
   if (name === "ink") return sky.text;
+  // Black drawn on a dark sky would almost disappear into the page, so it
+  // is painted with the sky's ink, like "ink" itself. Only when painting: the
+  // stroke keeps its black, and the export (on paper, a light sky) prints it.
+  if (sky.dark && isNearBlack(color)) return sky.text;
   const inks: Record<string, string> = sky.dark ? INK_NIGHT : INK_DAY;
   return inks[name] ?? color;
+}
+
+/** Black or nearly so: very little light (WCAG relative luminance) and no
+ *  real hue. A deep navy or a dark green is a choice, not black, and keeps
+ *  its color. */
+export function isNearBlack(color: string): boolean {
+  const match = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color.trim());
+  if (!match) return false;
+  const hex = match[1].length === 3 ? [...match[1]].map((c) => c + c).join("") : match[1];
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const linear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const luminance = 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+  return luminance < 0.05 && Math.max(r, g, b) - Math.min(r, g, b) < 0.12;
 }

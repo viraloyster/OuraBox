@@ -165,14 +165,55 @@ function closestList(editor: HTMLElement): HTMLElement | null {
   return list && editor.contains(list) ? list : null;
 }
 
+/** Blocks that may only hold text: a list inside one is invalid HTML. */
+const TEXT_ONLY_BLOCKS = new Set(["P", "H1", "H2", "H3"]);
+
+/** Takes a list out of the paragraph (or heading) it ended up in. On an empty
+ *  `<p>` the browser builds the list inside it, `<p><ul>…</ul></p>`, which no
+ *  parser would ever produce: once saved and opened again, the list jumps out
+ *  of its paragraph and leaves empty lines around it. Whatever was beside the
+ *  list stays in a paragraph of its own, and empty leftovers are dropped. */
+export function liftList(list: HTMLElement, editor: HTMLElement): void {
+  const isEmpty = (block: Element) => !block.textContent?.trim() && !block.querySelector("img, hr, table, ul, ol");
+  // Moving the list would lose the cursor (a live range falls out of what is
+  // moved), so its ends are noted as plain values and put back afterwards:
+  // the nodes are the same ones, only in another place.
+  const range = selectionIn(editor);
+  const ends = range && list.contains(range.startContainer) && list.contains(range.endContainer) ? ([range.startContainer, range.startOffset, range.endContainer, range.endOffset] as const) : null;
+  let parent = list.parentElement;
+  while (parent && parent !== editor && TEXT_ONLY_BLOCKS.has(parent.tagName) && editor.contains(parent)) {
+    const after = parent.cloneNode(false) as HTMLElement;
+    while (list.nextSibling) after.appendChild(list.nextSibling);
+    parent.after(list, after);
+    if (isEmpty(after)) after.remove();
+    if (isEmpty(parent)) parent.remove();
+    parent = list.parentElement;
+  }
+  if (ends) {
+    const restored = document.createRange();
+    restored.setStart(ends[0], ends[1]);
+    restored.setEnd(ends[2], ends[3]);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(restored);
+  }
+}
+
+/** A numbered or bulleted list, never left inside a paragraph. */
+export function toggleList(editor: HTMLElement, command: "insertOrderedList" | "insertUnorderedList"): void {
+  document.execCommand(command);
+  const list = closestList(editor);
+  if (list) liftList(list, editor);
+}
+
 /** Task list: a list with checkboxes that are ticked with a click. */
 export function toggleChecklist(editor: HTMLElement): void {
   const list = closestList(editor);
   if (list?.getAttribute("data-list") === "check") {
-    document.execCommand("insertUnorderedList");
+    toggleList(editor, "insertUnorderedList");
     return;
   }
-  if (!list || list.tagName === "OL") document.execCommand("insertUnorderedList");
+  if (!list || list.tagName === "OL") toggleList(editor, "insertUnorderedList");
   closestList(editor)?.setAttribute("data-list", "check");
 }
 

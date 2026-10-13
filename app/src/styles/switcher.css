@@ -108,6 +108,13 @@
   opacity: 1;
 }
 
+/* Among the project's other actions it is one more button, in line. */
+.doc-actions .project-hide {
+  position: static;
+  transform: none;
+  opacity: 1;
+}
+
 #pin-sidebar[aria-pressed="true"] {
   color: var(--accent);
   background: var(--accent-soft);

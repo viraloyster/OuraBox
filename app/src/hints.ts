@@ -8,6 +8,11 @@
 //   who use a pen or a touch screen, where there is no "mouse over".
 //   With `data-expand-on="click"` the panel only opens with a click; after
 //   a second, the button only says what it is.
+//
+// A panel that opened by itself, after resting the mouse, is a preview: it
+// closes when the mouse leaves. One the person asked for with a click stays
+// until they click outside, press Esc or click its button again; otherwise
+// it would vanish while they reach for something else on the screen.
 
 const DELAY_MS = 1000;
 const CLOSE_MS = 350;
@@ -16,6 +21,8 @@ let timer = 0;
 let target: HTMLElement | null = null;
 let bubble: HTMLElement | null = null;
 const closeTimers = new Map<string, number>();
+/** The panels opened (or kept) with a click: leaving them doesn't close them. */
+const held = new Set<string>();
 
 export function setupHints(): void {
   document.addEventListener("pointerover", (e) => {
@@ -45,12 +52,17 @@ export function setupHints(): void {
   for (const button of document.querySelectorAll<HTMLElement>("[data-expand]")) {
     const panel = document.getElementById(button.dataset.expand!);
     if (!panel) continue;
-    button.addEventListener("click", () => (panel.hidden ? openPanel(button) : closePanel(button)));
+    button.addEventListener("click", () => {
+      // A click on a panel that the mouse already opened keeps it, rather
+      // than taking away what the person was clicking to get.
+      if (panel.hidden || !held.has(panel.id)) openPanel(button, true);
+      else closePanel(button);
+    });
     // The panel stays open while the mouse is on the button or on the panel.
     for (const element of [button, panel]) {
       element.addEventListener("pointerenter", () => clearTimeout(closeTimers.get(panel.id)));
       element.addEventListener("pointerleave", (e) => {
-        if (e.pointerType === "touch" || panel.hidden) return;
+        if (e.pointerType === "touch" || panel.hidden || held.has(panel.id)) return;
         clearTimeout(closeTimers.get(panel.id));
         closeTimers.set(panel.id, window.setTimeout(() => closePanel(button), CLOSE_MS));
       });
@@ -112,9 +124,12 @@ function hideBubble(): void {
   bubble = null;
 }
 
-function openPanel(button: HTMLElement): void {
+function openPanel(button: HTMLElement, byClick = false): void {
   const panel = document.getElementById(button.dataset.expand!);
   if (!panel) return;
+  if (byClick) held.add(panel.id);
+  else if (panel.hidden) held.delete(panel.id);
+  clearTimeout(closeTimers.get(panel.id));
   hideBubble();
   panel.hidden = false;
   button.setAttribute("aria-expanded", "true");
@@ -122,6 +137,7 @@ function openPanel(button: HTMLElement): void {
 
 function closePanel(button: HTMLElement): boolean {
   const panel = document.getElementById(button.dataset.expand!);
+  if (panel) held.delete(panel.id);
   if (!panel || panel.hidden) return false;
   panel.hidden = true;
   button.setAttribute("aria-expanded", "false");

@@ -56,6 +56,7 @@ export default {
     rootsOf: "Roots of {name}",
     move: "Move to another project",
     release: "Let go (it isn't deleted)",
+    openElsewhere: "Open in another pane",
   },
   rename: {
     placeholder: "Empty: the title comes from the first line",

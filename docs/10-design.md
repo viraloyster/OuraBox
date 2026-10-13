@@ -30,7 +30,7 @@ Legend: **Decided** means agreed; **Proposed** means recommended but still to be
 
 ## Minimalism in practice
 
-- **Icons, not words:** the bar shows only good-sized icons, easy to tap and hard to miss. If the mouse stays over one for **a second**, the button says what it is; the colors and the pen thickness open the same way. The side list doesn't use this behavior.
+- **Icons, not words:** the bar shows only good-sized icons, easy to tap and hard to miss. If the mouse stays over one for **a second**, the button says what it is; the colors and the pen thickness open the same way. A panel that opened by itself closes when the mouse leaves; one opened with a click stays until you click outside, press Esc or click its button again. The side list doesn't use this behavior.
 - **What isn't the page steps aside on its own:** when you touch the page, the list hides (it can be pinned) and only the icon strip remains.
 - **What's used sometimes, one click away:** heading, subheading and normal text live in a single button ("Aa") that shows how each one looks.
 - **Nothing is deleted outright:** what's deleted goes to the trash, in the icon strip.
@@ -76,7 +76,7 @@ Implemented in [`app/src/themes.ts`](../app/src/themes.ts). Each sky has a backg
 - Each drawing color: at least 3 to 1.
 - No pure white or pure black on the page or in the text.
 
-**Drawing colors:** ink (the sky's text color), water blue, coral, amber, green and violet, with one version for light skies and another for dark skies. Strokes store the color's name, not its code, so a drawing made at night still looks right during the day.
+**Drawing colors:** ink (the sky's text color), water blue, coral, amber, green and violet, with one version for light skies and another for dark skies. Strokes store the color's name, not its code, so a drawing made at night still looks right during the day. Black (or nearly black) chosen from the basics is painted with the sky's text color on dark skies, so it doesn't vanish; the stroke keeps its black, and exports and prints, which are on paper, show it black.
 
 **Basis:** according to Valdez and Mehrabian (1994), saturation is what arouses and agitates the most, brightness is associated with pleasant feelings, and blue, blue-green and green tones are among the most pleasant. That's why the page and panels have low saturation even when the sky is intense.
 

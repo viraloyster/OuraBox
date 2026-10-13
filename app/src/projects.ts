@@ -154,10 +154,13 @@ export function switchRow(project: Project, count: number, keys: string[]): HTML
     renderList();
   });
   item.appendChild(open);
-  item.appendChild(projectActions(project, shown ? null : () => {
+  const actions = projectActions(project, shown ? null : () => {
     focusOn(project.id, true);
     renderList();
-  }));
+  });
+  item.appendChild(actions);
+  // The name leaves room for the actions on hover (see documents.css).
+  item.style.setProperty("--actions", String(actions.childElementCount));
   makeDropTarget(item, project.id);
   return item;
 }
@@ -240,7 +243,8 @@ export function projectHeader(project: Project | null, count: number, hideable =
     renderList();
   });
   item.appendChild(toggle);
-  if (project) item.appendChild(projectActions(project, null));
+  const actions = project ? projectActions(project, null) : null;
+  if (actions) item.appendChild(actions);
   if (hideable) {
     const hide = document.createElement("button");
     hide.className = "doc-action project-hide";
@@ -248,8 +252,12 @@ export function projectHeader(project: Project | null, count: number, hideable =
     hide.setAttribute("aria-label", t("main.projects.hideLabel", { name: project?.name ?? t("common.project") }));
     hide.innerHTML = ICONS.eyeOff;
     hide.addEventListener("click", () => hideFromFocus(key));
-    item.appendChild(hide);
+    // With the other actions, so they never sit on top of each other.
+    if (actions) actions.appendChild(hide);
+    else item.appendChild(hide);
   }
+  // The name leaves room for the actions on hover (see documents.css).
+  if (actions) item.style.setProperty("--actions", String(actions.childElementCount));
   if (project) makeDropTarget(item, project.id);
   return item;
 }

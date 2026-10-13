@@ -18,6 +18,12 @@
   transform-origin: 0 0;
 }
 
+/* A box that follows its text (see boxes.ts): as wide as the longest line,
+   up to its max-width, and then it wraps. */
+.text-box.fit {
+  width: max-content;
+}
+
 .box-text {
   min-height: 1.6em;
   padding: 0.15em 0.3em;
