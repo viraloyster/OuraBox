@@ -1,5 +1,5 @@
 import type en from "../en/images";
-import type { Translation } from "../../i18n";
+import type { Translation } from "../../core/i18n";
 
 export default {
   openFailed: "Não foi possível abrir esta imagem",

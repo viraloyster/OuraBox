@@ -1,5 +1,5 @@
 import type en from "../en/exporter";
-import type { Translation } from "../../i18n";
+import type { Translation } from "../../core/i18n";
 
 export default {
   noCanvas: "Canvas 2D não disponível",

@@ -1,5 +1,5 @@
 import type en from "../en/idea";
-import type { Translation } from "../../i18n";
+import type { Translation } from "../../core/i18n";
 
 export default {
   title: "Sobre esta idea",

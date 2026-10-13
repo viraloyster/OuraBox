@@ -59,7 +59,7 @@
 
 /* ---------- Print or save as PDF ----------
    Only the active page, at real size, with paper colors. The drawing comes in
-   as an image that src/export.ts paints right before (the screen canvases
+   as an image that src/page/export.ts paints right before (the screen canvases
    only cover what is visible). */
 
 .print-ink {

@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 // End-to-end tests: the interface in Chromium, against the Vite dev server.
 // In a plain browser the app uses the in-memory preview of the core (see
-// browserPreviewStorage in src/storage.ts), so every flow runs without Tauri.
+// browserPreviewStorage in src/core/storage.ts), so every flow runs without Tauri.
 // The preview keeps nothing across a reload: each test starts with no users.
 
 // Only `process.env` is needed here. It is declared locally so the interface's

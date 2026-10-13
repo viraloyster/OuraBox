@@ -1,5 +1,5 @@
 import type en from "../en/colors";
-import type { Translation } from "../../i18n";
+import type { Translation } from "../../core/i18n";
 
 export default {
   ink: { ink: "Tinta", agua: "Azul-água", coral: "Coral", sol: "Âmbar", alga: "Verde", crepusculo: "Violeta" },

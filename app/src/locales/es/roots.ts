@@ -1,5 +1,5 @@
 import type en from "../en/roots";
-import type { Translation } from "../../i18n";
+import type { Translation } from "../../core/i18n";
 
 export default {
   empty: "Todavía no hay raíces. En una hoja, elige una frase y toca «Profundizar».",

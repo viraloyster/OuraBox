@@ -5,27 +5,27 @@
 // What each part does lives in its own module: the shared state in state.ts,
 // the panes in workspace.ts, the list in explorer.ts, the toolbar in toolbar.ts…
 
-import { loadLocale, t, translateCss, translateDom } from "./i18n";
-import { setupLanguageChoices, setupLanguageSelect } from "./language";
-import { loadFonts } from "./fonts";
-import { installSizeStyles } from "./format";
-import { showLock } from "./lock";
-import { setupSecurity, startAutolock } from "./security";
-import { setupSettings } from "./settings";
-import { setupSky } from "./sky";
-import { storage } from "./storage";
-import { setupHints } from "./hints";
-import { renderColors } from "./colorpanel";
-import { setupSidebarPin } from "./explorer";
-import { setupWelcome } from "./projects";
-import { setupQuickNote } from "./quicknote";
-import { setupRootsMap } from "./rootsmap";
-import { setupSearch } from "./searchpanel";
-import { addUser, deleteUser, lockSpace, openSpace, saveEverything } from "./session";
-import { setupShortcuts } from "./shortcuts";
-import { $, setStatus, ws } from "./state";
-import { setupToolbar, steadyToolbar } from "./toolbar";
-import { addPane, layout, setupPaneDrop } from "./workspace";
+import { loadLocale, t, translateCss, translateDom } from "./core/i18n";
+import { setupLanguageChoices, setupLanguageSelect } from "./core/language";
+import { loadFonts } from "./core/fonts";
+import { installSizeStyles } from "./page/format";
+import { showLock } from "./space/lock";
+import { setupSecurity, startAutolock } from "./space/security";
+import { setupSettings } from "./space/settings";
+import { setupSky } from "./space/sky";
+import { storage } from "./core/storage";
+import { setupHints } from "./core/hints";
+import { renderColors } from "./drawing/colorpanel";
+import { setupSidebarPin } from "./workspace/explorer";
+import { setupWelcome } from "./workspace/projects";
+import { setupQuickNote } from "./workspace/quicknote";
+import { setupRootsMap } from "./ideas/rootsmap";
+import { setupSearch } from "./workspace/searchpanel";
+import { addUser, deleteUser, lockSpace, openSpace, saveEverything } from "./space/session";
+import { setupShortcuts } from "./workspace/shortcuts";
+import { $, setStatus, ws } from "./workspace/state";
+import { setupToolbar, steadyToolbar } from "./page/toolbar";
+import { addPane, layout, setupPaneDrop } from "./workspace/workspace";
 
 // ---------- Start ----------
 

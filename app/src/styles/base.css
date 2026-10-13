@@ -2,7 +2,7 @@
 
 /* OuraBox: modern, calm and fluid. See docs/10-design.md.
    The sky lives all around; the page always stays serene.
-   Colors come from the chosen sky (src/themes.ts); here there are only fallback
+   Colors come from the chosen sky (src/space/themes.ts); here there are only fallback
    values in case the sky hasn't loaded yet. */
 
 :root {

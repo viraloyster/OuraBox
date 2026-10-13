@@ -1,5 +1,5 @@
 import type en from "../en/boxes";
-import type { Translation } from "../../i18n";
+import type { Translation } from "../../core/i18n";
 
 export default {
   move: "Mover",

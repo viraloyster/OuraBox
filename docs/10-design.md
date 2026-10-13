@@ -51,7 +51,7 @@ A box with one corner open and a dot already outside: "Out of the Box" said lite
 
 ## The skies
 
-Implemented in [`app/src/themes.ts`](../app/src/themes.ts). Each sky has a background drawn with gradients (no images, no internet) and its own palette. The page always stays a serene color: the sky lives around it.
+Implemented in [`app/src/space/themes.ts`](../app/src/space/themes.ts). Each sky has a background drawn with gradients (no images, no internet) and its own palette. The page always stays a serene color: the sky lives around it.
 
 | Sky | Feeling | Tone | Page | Text | Accent |
 |---|---|---|---|---|---|
@@ -69,7 +69,7 @@ Implemented in [`app/src/themes.ts`](../app/src/themes.ts). Each sky has a backg
 
 **Automatic** is used by default: Clear if the system is in light mode, Starry night if it's in dark mode. The chosen sky is remembered.
 
-**Rules checked by the automated tests** ([`themes.test.ts`](../app/src/themes.test.ts)), for each sky:
+**Rules checked by the automated tests** ([`themes.test.ts`](../app/src/space/themes.test.ts)), for each sky:
 
 - Text on the page: contrast of at least 7 to 1.
 - Secondary text and accent: at least 4.5 to 1.
@@ -82,7 +82,7 @@ Implemented in [`app/src/themes.ts`](../app/src/themes.ts). Each sky has a backg
 
 ## Drawing
 
-Implemented in [`app/src/ink.ts`](../app/src/ink.ts):
+Implemented in [`app/src/drawing/ink.ts`](../app/src/drawing/ink.ts):
 
 - **Real pressure** with a digital pen: the stroke thins and thickens with the hand. With a mouse, pressure is simulated from speed.
 - **No smoothing by default:** the line follows the hand exactly. Smoothing (the stabilizer) is turned on with a button and the choice is remembered.

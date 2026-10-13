@@ -1,7 +1,7 @@
 /* Text formatting: bold, outlines, text and drawing colors, task lists and tables. */
 
 /* ---------- Text formatting ----------
-   Stored as data- attributes with closed sets of values (see src/format.ts). */
+   Stored as data- attributes with closed sets of values (see src/page/format.ts). */
 
 .editor [data-align="center"] {
   text-align: center;

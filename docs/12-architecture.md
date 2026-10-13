@@ -5,28 +5,29 @@ How the app is built inside, designed to work well in production: never lose dat
 ## The pieces
 
 ```
-Interface (TypeScript, inside the window)            Core (Rust)
+Interface (TypeScript, app/src/)                     Core (Rust, app/src-tauri/src/)
 ───────────────────────────────────────────          ─────────────────────────────
-main.ts      startup and wiring                       lib.rs        commands
-state.ts     what the workspace shares (ws)
-workspace.ts panes, layout, split view
-explorer.ts  sidebar, list, rename (+ projects, documents, trash, searchpanel, quicknote, rootsmap)
-toolbar.ts   modes and write tools (+ lettering, sheets, drawtools, colorpanel)
-session.ts   open, lock, sign out, delete user
-shortcuts.ts the keyboard
-                                                      users.rs      users: one space per person
-pane.ts      a pane: page, drawing, saving       ⇄    documents.rs  vault and documents
-ink.ts       drawing layer and shapes                 crypto.rs     encryption
-format.ts    text formatting
-table.ts     tables (with tablemath.ts: calculations)
-export.ts    PDF, image and text
-lock.ts      sign-in screen (username and password)             error.rs      errors with a code
-security.ts  auto-lock, password, delete user
-sky.ts       skies
-storage.ts   bridge to the core
-i18n.ts      languages (texts in locales/en, es, pt)
-history.ts   one undo for text and drawing
-styles.css   only imports styles/*.css, one file per area
+main.ts       startup and wiring                     lib.rs        commands
+workspace/    what the workspace shares (state.ts),  users.rs      users: one space per person
+              panes and split view, the sidebar      documents.rs  vault and documents
+              (explorer, projects, documents,   ⇄    crypto.rs     encryption
+              trash, search), quick note, keyboard   error.rs      errors with a code
+page/         a pane and its page (pane.ts): text
+              formatting, tables, text boxes,
+              pages, one undo (history.ts), export,
+              the toolbar
+drawing/      the drawing layer and shapes (ink.ts),
+              pen, blend, eraser and colors
+ideas/        about this idea, roots and their map,
+              ideas that come back
+space/        sign-in, locking, security, settings,
+              skies
+core/         bridge to the core (storage.ts),
+              languages (i18n.ts), images, places,
+              hints, HTML sanitizing
+locales/      texts in en, es, pt
+styles/       one stylesheet per area (styles.css
+              imports them in order)
 ```
 
 **Golden rule:** the interface never touches the disk or the keys. Everything sensitive (encrypting, saving, validating) happens in the Rust core. The interface only displays and captures.
@@ -140,7 +141,7 @@ With guides on, while a shape is being drawn its end point snaps if it's within 
 
 ### One undo
 
-Each pane has one history for its document (`src/history.ts`): the drawing keeps its own changes and the history only marks them in line; the text is kept as it was (HTML and boxes) before each group of changes, and a pause of 0.8 s closes a group. Ctrl+Z, Ctrl+Y, the toolbar buttons and the browser's own Undo all go there, in either mode. Opening a document or changing its pages starts the history over: the drawing moves with the pages, and undoing from before would leave it out of place.
+Each pane has one history for its document (`src/page/history.ts`): the drawing keeps its own changes and the history only marks them in line; the text is kept as it was (HTML and boxes) before each group of changes, and a pause of 0.8 s closes a group. Ctrl+Z, Ctrl+Y, the toolbar buttons and the browser's own Undo all go there, in either mode. Opening a document or changing its pages starts the history over: the drawing moves with the pages, and undoing from before would leave it out of place.
 
 ### Pages added by hand
 

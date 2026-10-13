@@ -75,30 +75,32 @@ OuraBox's safe space for PC (stage 1 of the [plan](../docs/08-plan.md)).
 
 ## How it's built
 
+The interface lives in `src/`, one folder per area: `workspace/` (the sidebar, projects, panes), `page/` (the page and everything you write on it), `drawing/`, `ideas/` (about this idea, roots), `space/` (signing in, security, settings, skies) and `core/` (the bridge to the Rust core, languages and shared pieces). Each test sits next to the file it tests. The Rust core is in `src-tauri/src/`.
+
 | Part | Where | What it does |
 |---|---|---|
 | Encryption | `src-tauri/src/crypto.rs` | Argon2id to turn the password into a key and XChaCha20-Poly1305 to encrypt. See [Technology](../docs/07-technology.md#security). |
 | Backups | `src-tauri/src/documents/copy.rs` | The encrypted backups: writing them in sealed chunks and opening them by checking everything before touching the space. |
 | Users | `src-tauri/src/users.rs` | One encrypted space per user, found by a fingerprint of the username; names aren't stored. |
 | Rust core | `src-tauri/src/documents.rs` | The vault (create, unlock, lock and recover), the documents and the encrypted projects. It writes atomically and only accepts its own identifiers, so nothing can read or write outside its folder. It encrypts the documents that the first version saved unencrypted. |
-| Sign-in screen | `src/lock.ts` | The screens to create a user, sign in, unlock after a lock and recover access. |
-| Security | `src/security.ts` | Auto-lock after inactivity, password change and deleting the user. |
+| Sign-in screen | `src/space/lock.ts` | The screens to create a user, sign in, unlock after a lock and recover access. |
+| Security | `src/space/security.ts` | Auto-lock after inactivity, password change and deleting the user. |
 | Errors | `src-tauri/src/error.rs` | Errors with a code (`locked`, `conflict`…), so the interface can react to each case. |
 | Bridge | `src-tauri/src/lib.rs` | The commands the interface can ask the core for. The ones that touch the disk run off the window's thread. |
 | Interface | `src/` | TypeScript with no framework, to keep it as light as possible. |
 | Workspace | `src/main.ts` and the modules it wires | `main.ts` only starts the app. `state.ts` holds what is shared; `workspace.ts` the panes and split view; `explorer.ts`, `projects.ts`, `documents.ts`, `trash.ts`, `searchpanel.ts`, `quicknote.ts` and `rootsmap.ts` the sidebar; `toolbar.ts`, `lettering.ts`, `sheets.ts`, `drawtools.ts` and `colorpanel.ts` the bar and its panels; `session.ts` signing in, locking and deleting the user; `shortcuts.ts` the keyboard. |
 | Styles | `src/styles.css` | Only imports `src/styles/*.css`, one file per area, in cascade order. |
-| Pane | `src/pane.ts` | One page with its document, its drawing, its mode, its zoom and its saving. |
-| Undo | `src/history.ts` | One history per document for text and drawing, in the order things were done. |
-| Roots | `src/roots.ts` | The map: builds the tree, places each card above its roots and draws the curves. |
-| Search | `src/search.ts` | Compares words without accents, by sound and by Damerau-Levenshtein distance. All in memory. |
-| Text boxes | `src/boxes.ts` | Creating, moving and widening them (a new one follows its text until it's widened by hand). The text is laid out at normal size and the whole box is scaled down, so it looks sharp at any scale. |
-| Pen | `src/colors.ts` | The favorite colors and the last color and width. |
-| Names after a second | `src/hints.ts` | A button's name, or the color and width panel, when the mouse rests over it for a second. |
-| Back where you were | `src/place.ts` | Remembers the reading spot, the cursor and the zoom of each document, and what was open. |
-| Drawing | `src/ink.ts` | Strokes are saved as points, not as an image. Three canvases inside the page that cover what's visible plus a margin: the strokes behind the text, the ones on top, and one for the pen, the eraser and the guides. Watercolor, blur and smudge are painted with the canvas (multiply, blur and soft dabs). The stroke shape uses [perfect-freehand](https://github.com/steveruizok/perfect-freehand) (MIT). |
-| Skies | `src/themes.ts` | The 9 palettes and their skies. The tests check the contrast of each one. |
-| HTML cleanup | `src/sanitize.ts` | When a document opens, only formatting tags and embedded images are kept, so no content can run code inside the app. |
+| Pane | `src/page/pane.ts` | One page with its document, its drawing, its mode, its zoom and its saving. |
+| Undo | `src/page/history.ts` | One history per document for text and drawing, in the order things were done. |
+| Roots | `src/ideas/roots.ts` | The map: builds the tree, places each card above its roots and draws the curves. |
+| Search | `src/workspace/search.ts` | Compares words without accents, by sound and by Damerau-Levenshtein distance. All in memory. |
+| Text boxes | `src/page/boxes.ts` | Creating, moving and widening them (a new one follows its text until it's widened by hand). The text is laid out at normal size and the whole box is scaled down, so it looks sharp at any scale. |
+| Pen | `src/drawing/colors.ts` | The favorite colors and the last color and width. |
+| Names after a second | `src/core/hints.ts` | A button's name, or the color and width panel, when the mouse rests over it for a second. |
+| Back where you were | `src/core/place.ts` | Remembers the reading spot, the cursor and the zoom of each document, and what was open. |
+| Drawing | `src/drawing/ink.ts` | Strokes are saved as points, not as an image. Three canvases inside the page that cover what's visible plus a margin: the strokes behind the text, the ones on top, and one for the pen, the eraser and the guides. Watercolor, blur and smudge are painted with the canvas (multiply, blur and soft dabs). The stroke shape uses [perfect-freehand](https://github.com/steveruizok/perfect-freehand) (MIT). |
+| Skies | `src/space/themes.ts` | The 9 palettes and their skies. The tests check the contrast of each one. |
+| HTML cleanup | `src/core/sanitize.ts` | When a document opens, only formatting tags and embedded images are kept, so no content can run code inside the app. |
 
 The architecture and its guarantees (atomic saving, revisions, errors) are in [Architecture](../docs/12-architecture.md).
 
