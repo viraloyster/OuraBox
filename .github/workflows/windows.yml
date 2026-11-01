@@ -48,7 +48,7 @@ jobs:
       - name: Build the installer
         run: npm run tauri build -- --bundles nsis
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: OuraBox-Windows
           path: app/src-tauri/target/release/bundle/nsis/*.exe
