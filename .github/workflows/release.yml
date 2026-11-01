@@ -23,7 +23,7 @@ jobs:
         working-directory: app
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # A tag that doesn't match the app's version would publish an
       # installer with the wrong number inside it.
